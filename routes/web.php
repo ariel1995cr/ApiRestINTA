@@ -30,93 +30,94 @@ Route::get('/consumirServicio', function () {
         'timeout'  => 10.0,
     ]);
 
-    $data = [
-        'Usuario' => 'userwebapi1',
-        'idEstacion' => 58,
-        'last' => 1000,
-        'offset' => 10,
-    ];
 
-    $response = $client->post(env('URL_INTA',NULL), [
-        'headers' => [
-            'token' => env('TOKEN_APIRESTCLIMA',NULL),
-            'Content-Type' => 'application/json'
-        ],
-        'body'    => json_encode($data),
-    ]);
-    
-    $body = $response->getBody();
+    $estacionesLista = Estacion::all()->pluck('idIPA');
+    foreach ($estacionesLista as $estacionArray) {
+        # code...
 
-    $dataEstacion = json_decode($body, true);
+        $data = [
+            'Usuario' => 'userwebapi1',
+            'idEstacion' => $estacionArray,
+            'last' => 1000,
+            'offset' => 10,
+        ];
 
-    return $dataEstacion;
-
-    $estacion = Estacion::where('denominacion', $dataEstacion['Nombre'])->first();
-
-    foreach ($dataEstacion['list'] as $key => $medicion) {
-        DB::table('estacion_medicion')->insert([
-            'codigoEstacion' =>$estacion->id,
-            'codigoMedicion'=> 1,
-            'valorMedicion'=> $medicion['temp'],
-            'created_at' => $medicion['fecha']['date'],
-            'updated_at' => Carbon::now(),
+        $response = $client->post(env('URL_INTA', NULL), [
+            'headers' => [
+                'token' => env('TOKEN_APIRESTCLIMA', NULL),
+                'Content-Type' => 'application/json'
+            ],
+            'body'    => json_encode($data),
         ]);
 
-        DB::table('estacion_medicion')->insert([
-            'codigoEstacion' =>$estacion->id,
-            'codigoMedicion'=> 2,
-            'valorMedicion'=> $medicion['hum'],
-            'created_at' => $medicion['fecha']['date'],
-            'updated_at' => Carbon::now(),
-        ]);
+        $body = $response->getBody();
 
-        DB::table('estacion_medicion')->insert([
-            'codigoEstacion' =>$estacion->id,
-            'codigoMedicion'=> 3,
-            'valorMedicion'=> $medicion['Lluvia'],
-            'created_at' => $medicion['fecha']['date'],
-            'updated_at' => Carbon::now(),
-        ]);
+        $dataEstacion = json_decode($body, true);
 
-        DB::table('estacion_medicion')->insert([
-            'codigoEstacion' =>$estacion->id,
-            'codigoMedicion'=> 4,
-            'valorMedicion'=> $medicion['vVel'],
-            'created_at' => $medicion['fecha']['date'],
-            'updated_at' => Carbon::now(),
-        ]);
-        
-        DB::table('estacion_medicion')->insert([
-            'codigoEstacion' =>$estacion->id,
-            'codigoMedicion'=> 5,
-            'valorMedicion'=> $medicion['vDir'],
-            'created_at' => $medicion['fecha']['date'],
-            'updated_at' => Carbon::now(),
-        ]);
+        $estacion = Estacion::where('denominacion', $dataEstacion['Nombre'])->first();
 
-        DB::table('estacion_medicion')->insert([
-            'codigoEstacion' =>$estacion->id,
-            'codigoMedicion'=> 6,
-            'valorMedicion'=> $medicion['pBarom'],
-            'created_at' => $medicion['fecha']['date'],
-            'updated_at' => Carbon::now(),
-        ]);
-        
-        DB::table('estacion_medicion')->insert([
-            'codigoEstacion' => $estacion->id,
-            'codigoMedicion'=> 7,
-            'valorMedicion'=> $medicion['RadSolar'],
-            'created_at' => $medicion['fecha']['date'],
-            'updated_at' => Carbon::now(),
-        ]);
+        foreach ($dataEstacion['list'] as $key => $medicion) {
+            DB::table('estacion_medicion')->insert([
+                'codigoEstacion' => $estacion->id,
+                'codigoMedicion' => 1,
+                'valorMedicion' => $medicion['temp'],
+                'created_at' => $medicion['fecha']['date'],
+                'updated_at' => Carbon::now(),
+            ]);
+
+            DB::table('estacion_medicion')->insert([
+                'codigoEstacion' => $estacion->id,
+                'codigoMedicion' => 2,
+                'valorMedicion' => $medicion['hum'],
+                'created_at' => $medicion['fecha']['date'],
+                'updated_at' => Carbon::now(),
+            ]);
+
+            DB::table('estacion_medicion')->insert([
+                'codigoEstacion' => $estacion->id,
+                'codigoMedicion' => 3,
+                'valorMedicion' => $medicion['Lluvia'],
+                'created_at' => $medicion['fecha']['date'],
+                'updated_at' => Carbon::now(),
+            ]);
+
+            DB::table('estacion_medicion')->insert([
+                'codigoEstacion' => $estacion->id,
+                'codigoMedicion' => 4,
+                'valorMedicion' => $medicion['vVel'],
+                'created_at' => $medicion['fecha']['date'],
+                'updated_at' => Carbon::now(),
+            ]);
+
+            DB::table('estacion_medicion')->insert([
+                'codigoEstacion' => $estacion->id,
+                'codigoMedicion' => 5,
+                'valorMedicion' => $medicion['vDir'],
+                'created_at' => $medicion['fecha']['date'],
+                'updated_at' => Carbon::now(),
+            ]);
+
+            DB::table('estacion_medicion')->insert([
+                'codigoEstacion' => $estacion->id,
+                'codigoMedicion' => 6,
+                'valorMedicion' => $medicion['pBarom'],
+                'created_at' => $medicion['fecha']['date'],
+                'updated_at' => Carbon::now(),
+            ]);
+
+            DB::table('estacion_medicion')->insert([
+                'codigoEstacion' => $estacion->id,
+                'codigoMedicion' => 7,
+                'valorMedicion' => $medicion['RadSolar'],
+                'created_at' => $medicion['fecha']['date'],
+                'updated_at' => Carbon::now(),
+            ]);
+        }
     }
-    
-    
-
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
