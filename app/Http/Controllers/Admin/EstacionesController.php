@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\CodigoMedicion;
 use App\Models\Estacion;
 use App\Models\Mediciones;
@@ -14,6 +15,12 @@ class EstacionesController extends Controller
     public function getAll()
     {
         $estaciones = Estacion::select('id as Código', 'denominacion as Denominación', 'latitud as Latitud', 'longitud as Longitud')->get();
+
+        foreach ($estaciones as $estacion) {
+            $actualizacion = Mediciones::where('codigoEstacion', $estacion->Código)->get()->last()->updated_at;
+            $estacion->ultimaActualizacion = Carbon::parse($actualizacion)->format('d-m-Y H:m');
+            $estacion->ultimaMedicion = Mediciones::where('codigoEstacion', $estacion->Código)->where('updated_at', $actualizacion)->get();
+        }
 
         return $estaciones;
     }
