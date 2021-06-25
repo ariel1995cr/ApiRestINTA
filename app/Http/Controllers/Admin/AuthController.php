@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\UserRegistered;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,12 +38,12 @@ class AuthController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
         $this->usuario->nombre = $request->nombre;
         $this->usuario->apellido = $request->apellido;
         $this->usuario->email = $request->email;
-        $this->usuario->password = $request->password;
+        $this->usuario->password = 123456;
         $this->usuario->rol = $request->rol;
         $this->usuario->save();
 
