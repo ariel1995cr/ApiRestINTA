@@ -10,4 +10,6 @@ class Estacion extends Model
     use HasFactory;
 
     protected $table = 'estaciones';
+
+    protected $fillable = ['denominacion', 'idExterna', 'identificacion'];
 }

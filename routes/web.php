@@ -22,6 +22,51 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/consumirServicioINTA', function () {
+
+    $dataBody = [
+        'nombreDeUsuario'=>'RHN',
+        'clave'=>'1R2H',
+    ];
+    $client = new Client([
+        // Base URI is used with relative requests
+        'base_uri' => 'http://utr.gsm.ina.gob.ar:5667/SAT2Rest/api/',
+        // You can set any number of default request options.
+        'timeout'  => 40.0,
+    ]);
+
+    $response = $client->post('AutenticarUsuario',['body'=>json_encode($dataBody),
+        'cookies' => new \GuzzleHttp\Cookie\FileCookieJar(storage_path('/cookies/cookies.json'))]);
+
+
+
+    $cookieData = json_decode(file_get_contents(storage_path('/cookies/cookies.json')));
+    foreach ($cookieData as $cookie) {
+        //If there are multiple cookie data, you could filter according to your case
+        $cookie = json_decode(json_encode($cookie), TRUE);
+        $setCookie = new \GuzzleHttp\Cookie\SetCookie($cookie);
+    }
+
+    $jar = new \GuzzleHttp\Cookie\CookieJar();
+    $jar->setCookie($setCookie);
+
+
+
+    $estaciones = Estacion::where('identificacion', 'INTA')->get();
+    foreach ($estaciones as $estacion) {
+        $data = [
+          'idEquipo'=>$estacion->idExterna
+        ];
+        $response = $client->post('RecuperarInstantaneosDeEquipo',['body'=>json_encode($data),
+            'cookies'=>$jar]);
+        print_r($response->getStatusCode());
+        print_r($response->getBody()->getContents());
+        echo "<br>";
+    }
+});
+
+
+
 Route::get('/consumirServicio', function () {
     $client = new Client([
         // Base URI is used with relative requests

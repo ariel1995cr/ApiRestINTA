@@ -18,7 +18,8 @@ class CreateEstacionesTable extends Migration
             $table->string('denominacion');
             $table->string('latitud')->nullable();
             $table->string('longitud')->nullable();
-            $table->string('idIPA');
+            $table->string('idExterna');
+            $table->enum('identificacion', ['IPA','INTA'])->default('IPA');
             $table->timestamps();
         });
     }
