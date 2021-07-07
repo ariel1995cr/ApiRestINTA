@@ -35,7 +35,7 @@
 <script>
 import { EstacionesServices } from "../../services/EstacionesServices";
 import {computed, onMounted} from "vue";
-import ProgressBar from "primevue/ProgressBar";
+import ProgressBar from "primevue/progressbar";
 import Card from 'primevue/card';
 export default {
     name: "index",
