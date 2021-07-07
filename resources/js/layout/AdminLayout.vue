@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Toast from "primevue/Toast";
+import Toast from "primevue/toast";
 import {ref} from "vue";
 import router from "../routes";
 export default {
