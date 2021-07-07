@@ -17,7 +17,7 @@ class AuthController extends Controller
         $this->usuario = new User();
     }
     public function index(){
-        return $this->usuario::simplePaginate(10);
+        return $this->usuario::paginate(10);
     }
 
     public function login(Request $request)
