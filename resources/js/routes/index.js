@@ -8,12 +8,12 @@ import IndexUsuarios from "../pages/Usuarios/index";
 import AgregarUsuario from "../pages/Usuarios/Agregar";
 const routes = [
     {
-        path: '',
+        path: '/',
         component: IndexLayout,
         name: 'layoutIndex',
         children: [
             {
-                path: '',
+                path: '/',
                 component: LoginForm,
                 name: 'Login',
             }

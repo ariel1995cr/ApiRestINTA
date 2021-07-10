@@ -15,6 +15,6 @@
         <div id="app">
             <router-view></router-view>
         </div>
-        <script src="{{ mix('js/app.js') }}"></script>
+        <script defer src="{{ mix('js/app.js') }}"></script>
     </body>
 </html>

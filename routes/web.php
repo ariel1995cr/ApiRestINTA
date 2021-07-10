@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\DB;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/{any}', function () {
+    return view('welcome');
+})->where('any', '.*');
+
 Route::get('/consumirServicio', function () {
     $client = new Client([
         // Base URI is used with relative requests
@@ -111,10 +116,6 @@ Route::get('/consumirServicio', function () {
         }
     }
 });
-
-Route::get('/{any}', function () {
-    return view('welcome');
-})->where('any', '.*');
 
 Route::get('/consumirServicioINTA', function () {
 
