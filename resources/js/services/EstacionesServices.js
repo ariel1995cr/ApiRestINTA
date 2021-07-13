@@ -24,8 +24,21 @@ export const EstacionesServices = () =>{
         state.loading = false;
     }
 
+    const getEstacion = async(id)=>{
+        state.loading = true;
+        await AxiosInstance.get('/api/v1/admin/estacion/'+id)
+            .then(resp=>{
+                state.data = resp.data;
+            })
+            .catch(err=>{
+                state.error = true;
+            })
+        state.loading = false;
+    }
+
     return {
         state,
         getEstaciones,
+        getEstacion,
     }
 }

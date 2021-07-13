@@ -25,6 +25,12 @@ class EstacionesController extends Controller
         return $estaciones;
     }
 
+    public function getEstacion(Estacion $estacion){
+        $ultimaFecha = Mediciones::select('updated_at')->where('codigoEstacion',$estacion->id)->orderBy('updated_at','desc')->first();
+        $estacion->ultimaMedicion = Mediciones::select('estacion_medicion.updated_at', 'codigomedicion.descripcion', 'codigomedicion.unidad', 'estacion_medicion.valorMedicion')->join('codigomedicion','estacion_medicion.codigoMedicion','=','codigomedicion.id')->where('codigoEstacion', $estacion->id)->where('estacion_medicion.updated_at', $ultimaFecha->updated_at)->orderBy('codigomedicion.descripcion')->get();
+        return response()->json($estacion);
+    }
+
     public function getLastMedicion($estacionId)
     {
         $fecha = Mediciones::where('codigoEstacion', $estacionId)->orderBy('created_at', 'desc')->first();

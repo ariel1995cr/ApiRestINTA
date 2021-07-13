@@ -6,10 +6,11 @@
     </div>
     <div class="container" v-else>
         <div class="row">
-            <div class="col-6 mb-2" v-for="(estacion, index) in stateEstaciones.data">
-                <div class="card bg-dark text-white">
+            <p class="fw-bolder fs-1 text-center">Estaciones activas</p>
+            <div class="col-12 col-md-6 mb-2" v-for="(estacion, index) in stateEstaciones.data">
+                <div class="card bg-primary text-white shadow" @click="router.push({name:'VerEstacion', params:{id: index+1}})" >
                     <img :src="`/storage/estaciones/${index+1}.png`" class="card-img">
-                    <div class="card-img-overlay text-dark">
+                    <div class="card-img-overlay text-white">
                         <h5 class="card-title">{{estacion.Denominación}}</h5>
                         <p style="font-size: 11px">LAT: {{estacion.Latitud}}
                             <br>
@@ -32,6 +33,7 @@
 <script>
 import { EstacionesServices } from "../../services/EstacionesServices";
 import {computed, onMounted} from "vue";
+import router from "../../routes/index";
 export default {
     name: "index",
     components:{
@@ -75,7 +77,8 @@ export default {
             stateEstaciones,
             getTemperatura,
             getProbLluvia,
-            getVelocidadViento
+            getVelocidadViento,
+            router,
         }
     }
 }
@@ -83,7 +86,7 @@ export default {
 
 <style scoped>
 .card-img{
- height: 250px;
-    opacity: 0.7;
+    height: 250px;
+    opacity: 0.4;
 }
 </style>

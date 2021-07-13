@@ -22,13 +22,21 @@ export const UsuariosServices = () =>{
         total: 0,
     });
 
-    const getUsuarios = async()=>{
+    const getUsuarios = async(url = null)=>{
         state.loading = true;
-        await AxiosInstance.get('/api/v1/admin/user')
+        let urlPage = ""
+        if(url == null){
+            urlPage = '/api/v1/admin/user';
+        }else{
+            urlPage = url;
+        }
+        await AxiosInstance.get(urlPage)
             .then(resp=>{
                 state.data = resp.data.data;
                 state.current_page = resp.data.current_page;
                 state.total = resp.data.total;
+                state.next_page = resp.data.next_page_url;
+                state.prev_page = resp.data.prev_page_url;
             })
             .catch(err=>{
                 state.error = true;

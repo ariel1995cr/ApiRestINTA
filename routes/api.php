@@ -37,6 +37,7 @@ Route::prefix('v1')->group(function () {
         Route::post('login', [AuthController::class, 'login']);
 
         Route::get('estaciones', [EstacionesControllerApi::class, 'getAll']);
+        Route::get('estacion/{estacion}', [EstacionesControllerApi::class, 'getEstacion']);
 
         Route::middleware('auth:sanctum')->get("user", [AuthController::class, 'profile']);
         Route::middleware('auth:sanctum')->get("refresh", [AuthController::class, 'refresh']);

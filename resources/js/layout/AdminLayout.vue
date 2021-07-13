@@ -6,13 +6,36 @@
             </a>
 
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                <li @click="changePage('AdminIndex')"><a class="nav-link px-2 link-secondary">Home</a></li>
-                <li @click="changePage('EstacionesIndex')"><a class="nav-link px-2 link-dark">Estaciones</a></li>
-                <li @click="changePage('UsuariosIndex')"><a  class="nav-link px-2 link-dark">Usuarios</a></li>
+                <router-link
+                    :to="{name: 'AdminIndex'}"
+                    exact
+                >
+                    <li>
+                        Home
+                    </li>
+                </router-link>
+                <router-link
+                    :to="{name: 'EstacionesIndex'}"
+                    class="nav-link px-2 link-dark"
+                    exact
+                >
+                    <li>
+                        Estaciones
+                    </li>
+                </router-link>
+                <router-link
+                    :to="{name: 'UsuariosIndex'}"
+                    class="nav-link px-2 link-dark"
+                    exact
+                >
+                    <li>
+                        Usuarios
+                    </li>
+                </router-link>
             </ul>
 
             <div class="col-md-3 text-end">
-                <button @click="cerrarSesion" type="button" class="btn btn-danger">Cerrar sesión</button>
+                <button @click="cerrarSesion" type="button" class="btn btn-outline-danger">Cerrar sesión</button>
             </div>
         </header>
         <main>
@@ -49,7 +72,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .bi {
     vertical-align: -.125em;
     fill: currentColor;
@@ -62,5 +85,7 @@ export default {
 .dropdown-toggle {
     outline: 0;
 }
-
+.exact-active{
+ color: darkgreen !important;
+}
 </style>

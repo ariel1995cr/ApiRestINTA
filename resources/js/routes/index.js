@@ -6,6 +6,7 @@ import IndexAdminPage from "../pages/IndexAdminPage";
 import IndexEstaciones from "../pages/Estaciones/index";
 import IndexUsuarios from "../pages/Usuarios/index";
 import AgregarUsuario from "../pages/Usuarios/Agregar";
+import VerEstacion from "../pages/Estaciones/VerEstacion";
 const routes = [
     {
         path: '/',
@@ -34,6 +35,12 @@ const routes = [
                 name: 'EstacionesIndex',
             },
             {
+                path: '/admin/estaciones/:id',
+                component: VerEstacion,
+                name: 'VerEstacion',
+                props: true,
+            },
+            {
                 path: '/admin/usuarios',
                 component: IndexUsuarios,
                 name: 'UsuariosIndex',
@@ -50,6 +57,8 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes: routes,
+    linkActiveClass: "nav-link px-2 link-dark",
+    linkExactActiveClass: "nav-link px-2 exact-active",
 })
 
 const isAuthenticated = () =>{
