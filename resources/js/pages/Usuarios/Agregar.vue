@@ -1,54 +1,56 @@
 <template>
-<form class="p-mt-2 p-p-3">
-    <div class="p-fluid p-formgrid p-grid">
-       <div class="p-field p-col-12 p-md-6">
-           <label for="nombre">Nombre</label>
-           <InputText v-model="usuario.nombre" id="nombre" type="text" />
-           <p v-if="stateUsuario.error && stateUsuario?.errors?.nombre" style="color: red">
-               {{stateUsuario.errors.nombre[0]}}
-           </p>
-       </div>
-        <div class="p-field p-col-12 p-md-6">
-            <label for="apellido">Apellido</label>
-            <InputText v-model="usuario.apellido" id="apellido" type="text" />
+    <div class="row g-2">
+        <div class="col-6">
+            <div class="form-floating">
+                <input type="text" v-model.trim="usuario.nombre" class="form-control" id="nombre" placeholder="Pedro">
+                <label for="nombre">Nombre</label>
+            </div>
+            <p v-if="stateUsuario.error && stateUsuario?.errors?.nombre" style="color: red">
+                {{stateUsuario.errors.nombre[0]}}
+            </p>
+        </div>
+        <div class="col-6">
+            <div class="form-floating">
+                <input type="text" v-model.trim="usuario.apellido" class="form-control" id="apellido" placeholder="Apellido">
+                <label for="apellido">Apellido</label>
+            </div>
             <p v-if="stateUsuario.error && stateUsuario?.errors?.apellido" style="color: red">
                 {{stateUsuario.errors.apellido[0]}}
             </p>
         </div>
-        <div class="p-field p-col-12 p-md-6">
-            <label for="email">Email</label>
-            <InputText v-model="usuario.email" id="email" type="email" />
+    </div>
+    <div class="row g-2 mt-2">
+        <div class="col-6">
+            <div class="form-floating">
+                <input type="email" v-model.trim="usuario.email" class="form-control" id="email" placeholder="Email">
+                <label for="email">Email</label>
+            </div>
             <p v-if="stateUsuario.error && stateUsuario?.errors?.email" style="color: red">
                 {{stateUsuario.errors.email[0]}}
             </p>
         </div>
-        <div class="p-field p-col-12 p-md-6">
-            <label>Rol</label>
-            <Dropdown v-model="usuario.rol" :options="roles" placeholder="Seleccionar rol" />
+        <div class="col-6">
+            <div class="form-floating">
+                <select v-model.trim="usuario.rol" class="form-select" id="floatingSelectGrid" aria-label="Floating label select example">
+                    <option selected>Seleccionar rol</option>
+                    <option :value="rol" v-for="rol in roles">{{rol}}</option>
+                </select>
+                <label for="floatingSelectGrid">Roles para seleccionar</label>
+            </div>
             <p v-if="stateUsuario.error && stateUsuario?.errors?.rol" style="color: red">
                 {{stateUsuario.errors.rol[0]}}
             </p>
         </div>
-        <div class="p-field p-col-12">
-            <Button @click="saveUsuario(usuario)" class="p-button-success" label="Guardar" />
-        </div>
-
     </div>
-</form>
+    <button @click="saveUsuario(usuario)" class="btn btn-primary mt-2" type="button">Guardar</button>
 </template>
 
 <script>
-import InputText from "primevue/inputtext";
-import Dropdown from "primevue/dropdown";
-import Button from "primevue/button";
 import {reactive} from "vue";
 import { UsuariosServices } from "../../services/UsuariosServices";
 export default {
     name: "Agregar",
     components:{
-        InputText,
-        Dropdown,
-        Button,
     },
     setup(){
         const roles = ['usuario', 'administrador'];

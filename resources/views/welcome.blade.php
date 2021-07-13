@@ -12,9 +12,9 @@
 
     </head>
     <body>
-        <div id="app">
+        <main id="app">
             <router-view></router-view>
-        </div>
+        </main>
         <script defer src="{{ mix('js/app.js') }}"></script>
     </body>
 </html>

@@ -1,33 +1,30 @@
 <template>
-    <div class="p-col-12" v-if="stateEstaciones.loading">
-        <ProgressBar mode="indeterminate"/>
+    <div class="container text-center" v-if="stateEstaciones.loading">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
     </div>
-    <div class="p-grid p-mt-2" v-else>
-        <div class="p-col-12 p-md-4" v-for="estacion in stateEstaciones.data">
-            <Card style="width: 100%; margin-bottom: 2em">
-                <template #title>
-                    {{estacion.Denominación}}
-                </template>
-                <template #content>
-                    <p style="font-size: 11px">LAT: {{estacion.Latitud}}</p>
-                    <p style="font-size: 11px">LONG: {{estacion.Longitud}}</p>
-                    <div class="p-grid">
-                        <div class="p-col-4 p-text-bold">
-                            <i class="wi wi-thermometer"></i>
-                            {{getTemperatura(estacion.ultimaMedicion)}}
-                        </div>
-                        <div class="p-col-4">
-                            <i class="wi wi-humidity"></i>
-                            {{getProbLluvia(estacion.ultimaMedicion)}}
-                        </div>
-                        <div class="p-col-4">
-                            <i class="wi wi-strong-wind"></i>
-                            {{getVelocidadViento(estacion.ultimaMedicion)}}
-                        </div>
+    <div class="container" v-else>
+        <div class="row">
+            <div class="col-6 mb-2" v-for="(estacion, index) in stateEstaciones.data">
+                <div class="card bg-dark text-white">
+                    <img :src="`/storage/estaciones/${index+1}.png`" class="card-img">
+                    <div class="card-img-overlay text-dark">
+                        <h5 class="card-title">{{estacion.Denominación}}</h5>
+                        <p style="font-size: 11px">LAT: {{estacion.Latitud}}
+                            <br>
+                            LONG: {{estacion.Longitud}}</p>
+                        <span class="card-text fs-2"><i class="wi wi-thermometer"></i>
+                            {{getTemperatura(estacion.ultimaMedicion)}}</span>
+                        <span class="card-text fs-2 m-4"><i class="wi wi-humidity"></i>
+                            {{getProbLluvia(estacion.ultimaMedicion)}}</span>
+                        <span class="card-text fs-2"><i class="wi wi-strong-wind"></i>
+                            {{getVelocidadViento(estacion.ultimaMedicion)}}</span>
+
+                        <p class="card-text">Ultima actualizacion: {{estacion.ultimaActualizacion}}</p>
                     </div>
-                    <p style="font-size: 11px">Ultima actualizacion: {{estacion.ultimaActualizacion}}</p>
-                </template>
-            </Card>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -35,13 +32,9 @@
 <script>
 import { EstacionesServices } from "../../services/EstacionesServices";
 import {computed, onMounted} from "vue";
-import ProgressBar from "primevue/progressbar";
-import Card from 'primevue/card';
 export default {
     name: "index",
     components:{
-        ProgressBar,
-        Card
     },
     setup(){
         const { getEstaciones, state:stateEstaciones } = EstacionesServices();
@@ -89,5 +82,8 @@ export default {
 </script>
 
 <style scoped>
-
+.card-img{
+ height: 250px;
+    opacity: 0.7;
+}
 </style>

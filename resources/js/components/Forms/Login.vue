@@ -1,35 +1,26 @@
 <template>
-    <div class="p-grid p-jc-center p-ai-center vertical-container">
-        <div class="p-col-12 p-md-4">
-            <div class="box">
-                <img src="../../assets/logoIPA.png">
-                <div class="p-fluid p-p-6">
-                    <div class="p-field">
-                        <label for="email">E-mail</label>
-                        <InputText id="email" type="email" v-model="usuario.email" />
-                    </div>
-                    <div class="p-field">
-                        <label>Password</label>
-                        <Password v-model="usuario.password"></Password>
-                    </div>
-                    <Button @click="login(usuario.email, usuario.password)" label="Ingresar" class="p-button-success" />
-                </div>
+    <main class="form-signin text-center">
+            <img class="mb-4" src="../../assets/logoIPA.png" alt="">
+            <h1 class="h3 mb-3 fw-normal">Iniciar sesión</h1>
+
+            <div class="form-floating">
+                <input type="email" class="form-control" id="email" v-model="usuario.email" placeholder="name@example.com">
+                <label for="email">Email</label>
             </div>
-        </div>
-    </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" v-model="usuario.password" placeholder="Password">
+                <label for="floatingPassword">Contraseña</label>
+            </div>
+            <button @click="login(usuario.email,usuario.password)" class="w-100 btn btn-lg btn-primary" type="submit">Ingresar</button>
+            <p class="mt-5 mb-3 text-muted">&copy; Tecno-Soluciones</p>
+    </main>
 </template>
 
 <script>
-import InputText from "primevue/inputtext";
-import Password from "primevue/password";
-import Button from "primevue/button";
 import { LoginServices } from "../../services/LoginServices";
 import {reactive} from "vue";
 export default {
     components:{
-      InputText,
-      Password,
-        Button,
     },
     name: "Login",
     setup(){
@@ -47,20 +38,43 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.box {
-    background-color: var(--surface-e);
-    text-align: center;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    border-radius: 4px;
-    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+<style lang="scss" scoped>
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
 }
-.vertical-container {
-    margin: 0;
-    height: 97vh;
-    background: var(--surface-d);
-    border-radius: 4px;
+
+.form-signin .checkbox {
+    font-weight: 400;
+}
+
+.form-signin .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
 }
 
 </style>

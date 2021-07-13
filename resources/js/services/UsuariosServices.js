@@ -1,12 +1,12 @@
 import AxiosInstance from "./AxiosInstance";
 
-import { reactive } from "vue";
-import { useToast } from "primevue/usetoast";
+import {inject, reactive} from "vue";
 import router from "../routes";
+import {useVueSweetAlert2} from "../useSwal2";
 
 export const UsuariosServices = () =>{
-    const toast = useToast();
-
+    const $swal = useVueSweetAlert2();
+    const InjectDirectly = inject("$swal");
     const state = reactive({
         loading: false,
         error: false,
@@ -46,13 +46,20 @@ export const UsuariosServices = () =>{
                 state.error = false;
                 state.errors = [];
                 router.push({name: 'UsuariosIndex'});
-                toast.add({severity:'success', summary: 'Usuario creado correctamente.', detail:resp.data.msg, life: 3000});
+                $swal.fire({
+                    icon: "success",
+                    title: "Usuario creado.",
+                    text: resp.data.message,
+                });
             })
             .catch(err=>{
                 state.error = true;
                 state.errors = err.response.data.errors;
-                toast.add({severity:'error', summary: 'Error en formulario.', detail:err.response.data.message, life: 3000});
-                console.log(err);
+                $swal.fire({
+                    icon: "error",
+                    title: "Error en formulario.",
+                    text: err.response.data.message,
+                });
             })
         state.loading = false;
     }

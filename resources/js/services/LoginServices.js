@@ -1,11 +1,14 @@
 import AxiosInstance from "./AxiosInstance";
 
 import { reactive } from "vue";
-import { useToast } from "primevue/usetoast";
 import router from "../routes";
 
+import { useVueSweetAlert2 } from "../useSwal2";
+import { inject } from "vue";
+
 export const LoginServices = () =>{
-    const toast = useToast();
+    const $swal = useVueSweetAlert2();
+    const InjectDirectly = inject("$swal");
     const state = reactive({
         loading: false,
         error: false,
@@ -23,7 +26,11 @@ export const LoginServices = () =>{
                 router.push({name:'AdminIndex'});
             })
             .catch(err=>{
-                toast.add({severity:'error', summary: 'Login Invalido.', detail:err.response.data.message, life: 3000});
+                $swal.fire({
+                    icon: "error",
+                    title: "Login no exitoso.",
+                    text: err.response.data.message,
+                });
             })
     }
 

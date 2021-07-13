@@ -1,17 +1,11 @@
 <template>
-    <Card @click="redirectTo" style="width: 100%; height: 6em">
-        <template #title>
-            <p class="p-text-center">{{props.title}}</p>
-        </template>
-    </Card>
+    <p class="text-center fs-3">Bienvenido {{usuario.apellido}} {{usuario.nombre}}</p>
 </template>
 
 <script>
-import Card from "primevue/card";
 import router from "../../routes";
 export default {
     components:{
-        Card,
     },
     name: "CardMenu.vue",
     props:{

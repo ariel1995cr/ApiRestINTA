@@ -1,28 +1,31 @@
 <template>
-    <div class="p-col-12 header p-shadow-10 p-text-capitalize p-p-3" style="color: white">
-        Bienvenido {{usuario.apellido}} {{usuario.nombre}}
-        <span class="p-ml-2 p-p-2 item" @click="changePage('AdminIndex')">
-            <i class="pi pi-home"></i>
-            Inicio
-        </span>
-        <span class="p-ml-5 p-p-2 item" @click="cerrarSesion">
-            <i class="pi pi-sign-out"></i>
-            Cerrar Sesión
-        </span>
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
+            </a>
+
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                <li @click="changePage('AdminIndex')"><a class="nav-link px-2 link-secondary">Home</a></li>
+                <li @click="changePage('EstacionesIndex')"><a class="nav-link px-2 link-dark">Estaciones</a></li>
+                <li @click="changePage('UsuariosIndex')"><a  class="nav-link px-2 link-dark">Usuarios</a></li>
+            </ul>
+
+            <div class="col-md-3 text-end">
+                <button @click="cerrarSesion" type="button" class="btn btn-danger">Cerrar sesión</button>
+            </div>
+        </header>
+        <main>
+            <router-view></router-view>
+        </main>
     </div>
-    <div class="p-grid p-jc-center p-mt-2">
-        <router-view></router-view>
-    </div>
-    <Toast/>
 </template>
 
 <script>
-import Toast from "primevue/toast";
 import {ref} from "vue";
 import router from "../routes";
 export default {
     components:{
-        Toast
     },
     name: "AdminLayout",
     setup(){
@@ -47,12 +50,17 @@ export default {
 </script>
 
 <style scoped>
-.header{
-    background-color: gray;
-    border-radius: 5px;
+.bi {
+    vertical-align: -.125em;
+    fill: currentColor;
 }
-.item:hover{
-    border: 2px solid black;
-    border-radius: 5px;
+
+.text-small {
+    font-size: 85%;
 }
+
+.dropdown-toggle {
+    outline: 0;
+}
+
 </style>
