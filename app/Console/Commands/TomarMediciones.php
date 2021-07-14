@@ -50,21 +50,21 @@ class TomarMediciones extends Command
             'timeout'  => 10.0,
         ]);
 
-
-        $estaciones = Estacion::all();
-
+        $estaciones = Estacion::where('identificacion','IPA')->get();
 
         foreach ($estaciones as $key => $estacion) {
             $data = [
                 'Usuario' => 'userwebapi1',
-                'idEstacion' => $estacion->idIPA,
+                'idEstacion' => $estacion->idExterna,
                 'last' => 1,
                 'offset' => 10,
             ];
 
-            $response = $client->post(env('URL_INTA', NULL), [
+
+
+            $response = $client->post('http://sipas.inta.gob.ar/codesipas/web/app_dev.php/getDataEstacion', [
                 'headers' => [
-                    'token' => env('TOKEN_APIRESTCLIMA', NULL),
+                    'token' => '08f97bceec374889fd52171f952b673a7b370ab96099254c3892da97c2682ff8',
                     'Content-Type' => 'application/json'
                 ],
                 'body'    => json_encode($data),

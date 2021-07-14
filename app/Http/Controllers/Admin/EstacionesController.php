@@ -19,7 +19,8 @@ class EstacionesController extends Controller
         foreach ($estaciones as $estacion) {
             $actualizacion = Mediciones::where('codigoEstacion', $estacion->Código)->get()->last()->updated_at;
             $estacion->ultimaActualizacion = Carbon::parse($actualizacion)->format('d-m-Y H:m');
-            $estacion->ultimaMedicion = Mediciones::where('codigoEstacion', $estacion->Código)->where('updated_at', $actualizacion)->get();
+            //$estacion->ultimaMedicion = Mediciones::where('codigoEstacion', $estacion->Código)->where('updated_at', $actualizacion)->get();
+            $estacion->ultimaMedicion = Mediciones::join('codigomedicion','estacion_medicion.codigoMedicion','=','codigomedicion.id')->where('codigoEstacion', $estacion->Código)->where('estacion_medicion.updated_at', $actualizacion)->orderBy('codigomedicion.descripcion')->get();
         }
 
         return $estaciones;

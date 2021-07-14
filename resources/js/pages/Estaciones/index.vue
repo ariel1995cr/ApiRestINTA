@@ -15,11 +15,11 @@
                         <p style="font-size: 11px">LAT: {{estacion.Latitud}}
                             <br>
                             LONG: {{estacion.Longitud}}</p>
-                        <span class="card-text fs-2"><i class="wi wi-thermometer"></i>
+                        <span class="card-text fs-2" v-if="getTemperatura(estacion.ultimaMedicion)"><i class="wi wi-thermometer"></i>
                             {{getTemperatura(estacion.ultimaMedicion)}}</span>
-                        <span class="card-text fs-2 m-4"><i class="wi wi-humidity"></i>
+                        <span class="card-text fs-2 m-4" v-if="getProbLluvia(estacion.ultimaMedicion)"><i class="wi wi-humidity"></i>
                             {{getProbLluvia(estacion.ultimaMedicion)}}</span>
-                        <span class="card-text fs-2"><i class="wi wi-strong-wind"></i>
+                        <span class="card-text fs-2" v-if="getVelocidadViento(estacion.ultimaMedicion)"><i class="wi wi-strong-wind"></i>
                             {{getVelocidadViento(estacion.ultimaMedicion)}}</span>
 
                         <p class="card-text">Ultima actualizacion: {{estacion.ultimaActualizacion}}</p>
@@ -46,12 +46,14 @@ export default {
         })
 
         const getTemperatura = (data)=>{
+            console.log("hola");
+            console.log(data);
             for (const medicion of data) {
                 if(medicion.codigoMedicion == 1){
                     return medicion.valorMedicion+"ºC";
                 }
             }
-            return "";
+            return null;
         }
 
         const getProbLluvia = (data)=>{
@@ -60,7 +62,7 @@ export default {
                     return medicion.valorMedicion+"%";
                 }
             }
-            return "";
+            return null;
         }
 
         const getVelocidadViento = (data)=>{
@@ -69,7 +71,7 @@ export default {
                     return medicion.valorMedicion+" Km/h";
                 }
             }
-            return "";
+            return null;
         }
 
         return{
