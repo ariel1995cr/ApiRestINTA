@@ -36,8 +36,9 @@ Route::prefix('v1')->group(function () {
     Route::prefix('admin')->group(function () {
         Route::post('login', [AuthController::class, 'login']);
 
-        Route::get('estaciones', [EstacionesControllerApi::class, 'getAll']);
+        Route::get('estaciones/{estacion?}', [EstacionesControllerApi::class, 'getAll']);
         Route::get('estacion/{estacion}', [EstacionesControllerApi::class, 'getEstacion']);
+        Route::get('estacion/{estacion}/historico', [EstacionesControllerApi::class, 'getHistoricoMedicion']);
 
         Route::middleware('auth:sanctum')->get("user", [AuthController::class, 'profile']);
         Route::middleware('auth:sanctum')->get("refresh", [AuthController::class, 'refresh']);

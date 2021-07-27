@@ -11,11 +11,24 @@ export const EstacionesServices = () =>{
         data: "",
     });
 
-    const getEstaciones = async()=>{
+    const getEstaciones = async(sortBy=null)=>{
         state.loading = true;
-        await AxiosInstance.get('/api/v1/admin/estaciones')
+        let url;
+        if(sortBy){
+            url = '/api/v1/admin/estaciones/'+sortBy;
+        }else{
+            url = '/api/v1/admin/estaciones';
+        }
+        await AxiosInstance.get(url)
             .then(resp=>{
                 state.data = resp.data;
+                state.data.forEach(el=>{
+                    el.position = {
+                        lat: Number(el.Latitud),
+                        lng: Number(el.Longitud)
+                    };
+                })
+                console.log(state.data);
             })
             .catch(err=>{
                 state.error = true;
@@ -35,6 +48,7 @@ export const EstacionesServices = () =>{
             })
         state.loading = false;
     }
+
 
     return {
         state,

@@ -6,34 +6,60 @@
     </div>
     <div class="container" v-else>
         <div class="row">
+            <GMapMap
+                :center="{lat: -44, lng: -69}"
+                :zoom="6"
+                map-type-id="terrain"
+                style="width: 100vw; height: 400px"
+            >
+                <GMapMarker
+                    :key="index"
+                    v-for="(m, index) in stateEstaciones.data"
+                    :position="m.position"
+                    :clickable="true"
+                    @click="openMarker(m.Código)"
+                >
+                    <GMapInfoWindow
+                        :opened="openedMarkerID === m.Código"
+                    >
+                        <div>
+                            <h2>{{m.Denominación}}</h2>
+                            <span>Latitud: {{m.Latitud}}<br/>
+                            Longitud: {{m.Longitud}}</span>
+                        </div>
+                    </GMapInfoWindow>
+                </GMapMarker>
+            </GMapMap>
             <p class="fw-bolder fs-1 text-center">Estaciones activas</p>
-            <div class="col-12 col-md-6 mb-2" v-for="(estacion, index) in stateEstaciones.data">
-                <div class="card bg-primary text-white shadow" @click="router.push({name:'VerEstacion', params:{id: index+1}})" >
-                    <img :src="`/storage/estaciones/${index+1}.png`" class="card-img">
-                    <div class="card-img-overlay text-white">
-                        <h5 class="card-title">{{estacion.Denominación}}</h5>
-                        <p style="font-size: 11px">LAT: {{estacion.Latitud}}
-                            <br>
-                            LONG: {{estacion.Longitud}}</p>
-                        <span class="card-text fs-2" v-if="getTemperatura(estacion.ultimaMedicion)"><i class="wi wi-thermometer"></i>
-                            {{getTemperatura(estacion.ultimaMedicion)}}</span>
-                        <span class="card-text fs-2 m-4" v-if="getProbLluvia(estacion.ultimaMedicion)"><i class="wi wi-humidity"></i>
-                            {{getProbLluvia(estacion.ultimaMedicion)}}</span>
-                        <span class="card-text fs-2" v-if="getVelocidadViento(estacion.ultimaMedicion)"><i class="wi wi-strong-wind"></i>
-                            {{getVelocidadViento(estacion.ultimaMedicion)}}</span>
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th @click="sort('id')">ID <i :class="isActive('id')"></i></th>
+                    <th @click="sort('denominacion')">Denominación <i :class="isActive('denominacion')"></i></th>
+                    <th @click="sort('latitud')">Latitud <i :class="isActive('latitud')"></i></th>
+                    <th @click="sort('longitud')">Longitud <i :class="isActive('longitud')"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="estacion in stateEstaciones.data" :key="estacion.id" @click="router.push({name:'VerEstacion', params:{id: estacion.Código}})">
+                    <td>{{estacion.Código}}</td>
+                    <td>{{estacion.Denominación}}</td>
+                    <td>{{estacion.Latitud}}</td>
+                    <td>{{estacion.Longitud}}</td>
+                </tr>
 
-                        <p class="card-text">Ultima actualizacion: {{estacion.ultimaActualizacion}}</p>
-                    </div>
-                </div>
-            </div>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>
 
 <script>
 import { EstacionesServices } from "../../services/EstacionesServices";
-import {computed, onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
 import router from "../../routes/index";
+
+
 export default {
     name: "index",
     components:{
@@ -41,54 +67,58 @@ export default {
     setup(){
         const { getEstaciones, state:stateEstaciones } = EstacionesServices();
 
+        let openedMarkerID = ref(null);
+
+        const sortBy = ref({
+            direction: 'desc',
+            campo: '',
+        });
+
         onMounted(async ()=>{
             await getEstaciones();
         })
 
-        const getTemperatura = (data)=>{
-            console.log("hola");
-            console.log(data);
-            for (const medicion of data) {
-                if(medicion.codigoMedicion == 1){
-                    return medicion.valorMedicion+"ºC";
-                }
+        const sort = async (campo) =>{
+            if(sortBy.value.campo === campo){
+                sortBy.value.direction = sortBy.value.direction === 'asc' ? 'desc' : 'asc';
+            }else{
+                sortBy.value.campo = campo;
+                sortBy.value.direction = 'asc';
             }
-            return null;
-        }
+            getEstaciones(JSON.stringify(sortBy.value));
+        };
 
-        const getProbLluvia = (data)=>{
-            for (const medicion of data) {
-                if(medicion.codigoMedicion == 3){
-                    return medicion.valorMedicion+"%";
-                }
+        const isActive = (campo) => {
+            if(campo === sortBy.value.campo){
+                return sortBy.value.direction === 'asc' ? 'bi bi-sort-alpha-down' : 'bi bi-sort-alpha-up';
             }
-            return null;
-        }
+            return '';
+        };
 
-        const getVelocidadViento = (data)=>{
-            for (const medicion of data) {
-                if(medicion.codigoMedicion == 4){
-                    return medicion.valorMedicion+" Km/h";
-                }
-            }
-            return null;
+        const openMarker = (id) => {
+            openedMarkerID.value = id
         }
 
         return{
-            getEstaciones,
             stateEstaciones,
-            getTemperatura,
-            getProbLluvia,
-            getVelocidadViento,
             router,
+            sort,
+            isActive,
+            openedMarkerID,
+            openMarker,
         }
     }
 }
 </script>
 
 <style scoped>
-.card-img{
-    height: 250px;
-    opacity: 0.4;
+.tablesorter-header::before {
+    content: '\f0de';            /* Font Awesome's up arrow */
+    top: calc(50% - 0.75em);     /* Tricky to calculate the top offset */
+}
+
+.tablesorter-header::after {
+    content: '\f0dd';            /* Font Awesome's down arrow */
+    bottom: calc(50% - 0.75em);
 }
 </style>

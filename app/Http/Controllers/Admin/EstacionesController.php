@@ -8,22 +8,21 @@ use App\Models\Estacion;
 use App\Models\Mediciones;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EstacionesController extends Controller
 {
     //
-    public function getAll()
+    public function getAll($estacion=null)
     {
-        $estaciones = Estacion::select('id as Código', 'denominacion as Denominación', 'latitud as Latitud', 'longitud as Longitud')->get();
+        $estaciones = Estacion::select('id as Código', 'denominacion as Denominación', 'latitud as Latitud', 'longitud as Longitud');
 
-        foreach ($estaciones as $estacion) {
-            $actualizacion = Mediciones::where('codigoEstacion', $estacion->Código)->get()->last()->updated_at;
-            $estacion->ultimaActualizacion = Carbon::parse($actualizacion)->format('d-m-Y H:m');
-            //$estacion->ultimaMedicion = Mediciones::where('codigoEstacion', $estacion->Código)->where('updated_at', $actualizacion)->get();
-            $estacion->ultimaMedicion = Mediciones::join('codigomedicion','estacion_medicion.codigoMedicion','=','codigomedicion.id')->where('codigoEstacion', $estacion->Código)->where('estacion_medicion.updated_at', $actualizacion)->orderBy('codigomedicion.descripcion')->get();
+        if($estacion){
+            $filter = json_decode($estacion);
+            $estaciones->orderBy($filter->campo, $filter->direction);
         }
 
-        return $estaciones;
+        return $estaciones->get();
     }
 
     public function getEstacion(Estacion $estacion){
@@ -51,5 +50,14 @@ class EstacionesController extends Controller
             ->whereBetween('created_at', [$desde, $hasta])
             ->orderBy('created_at', 'desc')
             ->get();
+    }
+
+    public function getHistoricoMedicion(Estacion $estacion){
+        $historicoEstado = DB::table('estacion_medicion as em')
+            ->select('em.id','em.created_at', 'em.updated_at', 'em.codigoMedicion', 'cm.unidad', 'cm.descripcion', 'em.valorMedicion')
+            ->where('codigoEstacion', $estacion->id)
+            ->leftJoin('codigomedicion as cm','cm.id','=','em.codigoMedicion');
+        $historicoEstado->orderByDesc('em.id');
+        return $historicoEstado->paginate();
     }
 }
