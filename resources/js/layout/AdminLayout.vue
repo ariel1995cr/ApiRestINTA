@@ -1,22 +1,22 @@
 <template>
     <div class="container">
-        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between p-3 mb-4 mt-2 border-2 rounded-2 border-bottom bg-secondary bg-gradient shadow-lg">
+            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-decoration-none">
                 <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
             </a>
 
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
                 <router-link
                     :to="{name: 'AdminIndex'}"
-                    exact
+                    class="nav-link px-2 link-light"
                 >
-                    <li>
+                    <li class="link-light">
                         Home
                     </li>
                 </router-link>
                 <router-link
                     :to="{name: 'EstacionesIndex'}"
-                    class="nav-link px-2 link-dark"
+                    class="nav-link px-2 link-light"
                     exact
                 >
                     <li>
@@ -25,7 +25,7 @@
                 </router-link>
                 <router-link
                     :to="{name: 'UsuariosIndex'}"
-                    class="nav-link px-2 link-dark"
+                    class="nav-link px-2 link-light"
                     exact
                 >
                     <li>
@@ -35,7 +35,7 @@
             </ul>
 
             <div class="col-md-3 text-end">
-                <button @click="cerrarSesion" type="button" class="btn btn-outline-danger">Cerrar sesión</button>
+                <button @click="cerrarSesion" type="button" class="btn btn-danger">Cerrar sesión</button>
             </div>
         </header>
         <main>
@@ -86,6 +86,6 @@ export default {
     outline: 0;
 }
 .exact-active{
- color: darkgreen !important;
+ color: lawngreen !important;
 }
 </style>

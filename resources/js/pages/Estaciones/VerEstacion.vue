@@ -5,9 +5,9 @@
         </div>
     </div>
     <div class="container" v-else>
-        <div class="row text-center">
-            <p class="fw-bolder fs-1 text-center">{{ stateEstacion.data.denominacion }}</p>
-            <img class="w-50 rounded mx-auto" :src="`/storage/estaciones/${stateEstacion.data.id}.png`">
+        <div class="row text-center bg-secondary p-2 border-2 rounded-2">
+            <p class="fw-bolder fs-1 text-center text-light">{{ stateEstacion.data.denominacion }}</p>
+            <img class="w-50 mx-auto rounded-2" :src="`/storage/estaciones/${stateEstacion.data.id}.png`">
             <ul class="list-group w-50">
                 <li class="list-group-item d-flex justify-content-between align-items-center" v-for="medicion in stateEstacion.data.ultimaMedicion">
                     {{medicion.descripcion}}:

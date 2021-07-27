@@ -18,6 +18,7 @@ export const UsuariosServices = () =>{
         last_page: "",
         next_page: "",
         prev_page: "",
+        links: "",
         per_page: 10,
         total: 0,
     });
@@ -37,6 +38,7 @@ export const UsuariosServices = () =>{
                 state.total = resp.data.total;
                 state.next_page = resp.data.next_page_url;
                 state.prev_page = resp.data.prev_page_url;
+                state.links = resp.data.links;
             })
             .catch(err=>{
                 state.error = true;

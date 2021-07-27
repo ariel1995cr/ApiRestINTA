@@ -1,11 +1,11 @@
 <template>
     <div class="row justify-content-end">
-        <div class="col-2">
+        <div class="col-1">
             <button @click="router.push({name: 'UsuariosAgregar'})" type="button" class="btn btn-outline-success">Agregar</button>
         </div>
     </div>
-    <div class="table-responsive table-striped">
-        <table class="table align-middle">
+    <div class="table-responsive table-striped mt-2">
+        <table class="table table-hover table-bordered">
             <thead>
             <tr>
                 <td>Nombre</td>
@@ -26,16 +26,10 @@
             </tbody>
         </table>
     </div>
-    <nav class="ml-2 float-end">
-        <ul class="pagination">
-            <li @click="getUsuarios(stateUsuarios.prev_page)" class="page-item" v-if="stateUsuarios.prev_page">
-                <a class="page-link">Anterior</a>
-            </li>
-            <li class="page-item active" aria-current="page">
-                <a class="page-link">{{stateUsuarios.current_page}}</a>
-            </li>
-            <li @click="getUsuarios(stateUsuarios.next_page)" class="page-item" v-if="stateUsuarios.next_page">
-                <a class="page-link">Siguiente</a>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" @click="getUsuarios(link.url)" :class="{'active': link.active}" v-for="link in stateUsuarios.links">
+                <a class="page-link" v-html="link.label"></a>
             </li>
         </ul>
     </nav>

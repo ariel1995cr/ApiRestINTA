@@ -7,6 +7,7 @@
     <div class="container" v-else>
         <div class="row">
             <GMapMap
+                class="bg-secondary p-2 border-2 rounded-2"
                 :center="{lat: -44, lng: -69}"
                 :zoom="6"
                 map-type-id="terrain"
