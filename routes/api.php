@@ -43,6 +43,6 @@ Route::prefix('v1')->group(function () {
         Route::middleware('auth:sanctum')->get("user", [AuthController::class, 'profile']);
         Route::middleware('auth:sanctum')->get("refresh", [AuthController::class, 'refresh']);
 
-        Route::apiResource('user',AuthController::class)->only('store', 'index');
+        Route::apiResource('user',AuthController::class)->only('store', 'index', 'update');
     });
 });

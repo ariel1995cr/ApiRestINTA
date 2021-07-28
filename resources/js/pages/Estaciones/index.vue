@@ -25,8 +25,13 @@
                     >
                         <div>
                             <h2>{{m.Denominación}}</h2>
-                            <span>Latitud: {{m.Latitud}}<br/>
-                            Longitud: {{m.Longitud}}</span>
+                            <span>
+                                Latitud: {{m.Latitud}}
+                                <br/>
+                                Longitud: {{m.Longitud}}
+                                <br/>
+                                Ultima medici&oacuten: {{stateHistoricoServices.data.updated_at}}
+                            </span>
                         </div>
                     </GMapInfoWindow>
                 </GMapMarker>
@@ -57,6 +62,7 @@
 
 <script>
 import { EstacionesServices } from "../../services/EstacionesServices";
+import { HistoricoEstacionServices } from "../../services/HistoricoEstacionesServices";
 import {computed, onMounted, ref} from "vue";
 import router from "../../routes/index";
 
@@ -67,6 +73,7 @@ export default {
     },
     setup(){
         const { getEstaciones, state:stateEstaciones } = EstacionesServices();
+        const { getUltimaActualizacion, state:stateHistoricoServices } = HistoricoEstacionServices();
 
         let openedMarkerID = ref(null);
 
@@ -98,10 +105,12 @@ export default {
 
         const openMarker = (id) => {
             openedMarkerID.value = id
+            getUltimaActualizacion(id);
         }
 
         return{
             stateEstaciones,
+            stateHistoricoServices,
             router,
             sort,
             isActive,

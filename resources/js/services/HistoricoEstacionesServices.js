@@ -36,9 +36,20 @@ export const HistoricoEstacionServices = () =>{
         state.loading = false;
     }
 
+    const getUltimaActualizacion = async(id)=>{
+        state.loading = true;
+        await AxiosInstance.get('/api/v1/admin/estacion/'+id)
+            .then(resp=>{
+                state.data = resp.data;
+            })
+            .catch()
+        state.loading = false;
+    }
+
 
     return {
         state,
         getHistoricoEstacion,
+        getUltimaActualizacion,
     }
 }

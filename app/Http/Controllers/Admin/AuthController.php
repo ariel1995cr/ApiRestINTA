@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Events\UserRegistered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,6 +53,19 @@ class AuthController extends Controller
         return response()->json([
             'data' => $this->usuario,
             'msg' => 'Usuario creado correctamente.',
+        ]);
+    }
+
+    public function update(User $user, UpdateUserRequest $request)
+    {
+        $user->nombre = $request->nombre;
+        $user->apellido = $request->apellido;
+        $user->rol = $request->rol;
+        $user->update();
+
+        return response()->json([
+            'data' => $this->usuario,
+            'msg' => 'Usuario actualizado correctamente.',
         ]);
     }
 

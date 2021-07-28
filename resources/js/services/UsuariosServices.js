@@ -3,6 +3,7 @@ import AxiosInstance from "./AxiosInstance";
 import {inject, reactive} from "vue";
 import router from "../routes";
 import {useVueSweetAlert2} from "../useSwal2";
+import { Modal } from "bootstrap/dist/js/bootstrap.min.js";
 
 export const UsuariosServices = () =>{
     const $swal = useVueSweetAlert2();
@@ -74,9 +75,40 @@ export const UsuariosServices = () =>{
         state.loading = false;
     }
 
+    const updateUsuario = async(data,userID)=>{
+        state.loading = true;
+        let response = await AxiosInstance.put('/api/v1/admin/user/'+userID,{
+            ...data
+        })
+            .then(resp=>{
+                state.error = false;
+                state.errors = [];
+                $swal.fire({
+                    icon: "success",
+                    title: "Usuario actualizado.",
+                    text: resp.data.message,
+                });
+                getUsuarios();
+                return true;
+            })
+            .catch(err=>{
+                state.error = true;
+                state.errors = err.response.data.errors;
+                $swal.fire({
+                    icon: "error",
+                    title: "Error en formulario.",
+                    text: err.response.data.message,
+                });
+                return false;
+            })
+        state.loading = false;
+        return response;
+    }
+
     return {
         state,
         getUsuarios,
-        saveUsuario
+        saveUsuario,
+        updateUsuario
     }
 }
