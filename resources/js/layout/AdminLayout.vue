@@ -1,16 +1,12 @@
 <template>
-    <div class="container">
-        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between p-3 mb-4 mt-2 border-2 rounded-2 border-bottom bg-secondary bg-gradient shadow-lg">
-            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-decoration-none">
-                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
-            </a>
-
-            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+    <div class="container" style="padding-bottom:50px;">
+        <header style="height: 60px" class="mt-2 border-2 rounded-2 border-bottom bg-secondary bg-gradient ml-2 w-100 fixed-bottom p-2">
+            <ul class="nav col-12 col-md-auto justify-content-center mx-auto list-inline">
                 <router-link
                     :to="{name: 'AdminIndex'}"
                     class="nav-link px-2 link-light"
                 >
-                    <li class="link-light">
+                    <li class="link-light list-inline-center text-center">
                         Home
                     </li>
                 </router-link>
@@ -32,13 +28,14 @@
                         Usuarios
                     </li>
                 </router-link>
+                <li
+                    class="mt-1 link-light"
+                >
+                    <button @click="cerrarSesion" type="button" class="btn btn-sm btn-danger">Cerrar sesión</button>
+                </li>
             </ul>
-
-            <div class="col-md-3 text-end">
-                <button @click="cerrarSesion" type="button" class="btn btn-danger">Cerrar sesión</button>
-            </div>
         </header>
-        <main>
+        <main class="p-2">
             <router-view></router-view>
         </main>
     </div>
