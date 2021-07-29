@@ -1,7 +1,10 @@
 <template>
-    <div class="container" style="padding-bottom:50px;">
-        <header style="height: 60px" class="mt-2 border-2 rounded-2 border-bottom bg-secondary bg-gradient ml-2 w-100 fixed-bottom p-2">
-            <ul class="nav col-12 col-md-auto justify-content-center mx-auto list-inline">
+    <div class="container mt-2">
+        <main class="p-2 bg-light bg-gradient border-2 rounded-2 p-2" style="height: 90vh !important; overflow-x: hidden !important">
+            <router-view></router-view>
+        </main>
+        <div class="w-100 text-center border-2 bg-secondary bg-gradient rounded-2 mt-2" style="height: 50px">
+            <ul class="nav col-12 col-md-auto justify-content-center mx-auto list-inline p-1">
                 <router-link
                     :to="{name: 'AdminIndex'}"
                     class="nav-link px-2 link-light"
@@ -34,10 +37,7 @@
                     <button @click="cerrarSesion" type="button" class="btn btn-sm btn-danger">Cerrar sesión</button>
                 </li>
             </ul>
-        </header>
-        <main class="p-2">
-            <router-view></router-view>
-        </main>
+        </div>
     </div>
 </template>
 
@@ -84,5 +84,8 @@ export default {
 }
 .exact-active{
  color: lawngreen !important;
+}
+body {
+    overflow: hidden; /* Hide scrollbars */
 }
 </style>

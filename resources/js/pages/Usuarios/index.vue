@@ -1,5 +1,6 @@
 <template>
-    <div class="row justify-content-end">
+    <p class="fw-bolder fs-1 text-center">Listado usuarios</p>
+    <div class="row justify-content-end p-2">
         <div class="col-1">
             <button @click="router.push({name: 'UsuariosAgregar'})" type="button" class="btn btn-outline-success">Agregar</button>
         </div>
