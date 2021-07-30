@@ -39,6 +39,7 @@ Route::prefix('v1')->group(function () {
         Route::get('estaciones/{estacion?}', [EstacionesControllerApi::class, 'getAll']);
         Route::get('estacion/{estacion}', [EstacionesControllerApi::class, 'getEstacion']);
         Route::get('estacion/{estacion}/historico', [EstacionesControllerApi::class, 'getHistoricoMedicion']);
+        Route::post('estacion/{estacion}', [EstacionesControllerApi::class, 'updateCoordenadas']);
 
         Route::middleware('auth:sanctum')->get("user", [AuthController::class, 'profile']);
         Route::middleware('auth:sanctum')->get("refresh", [AuthController::class, 'refresh']);

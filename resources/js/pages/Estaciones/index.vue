@@ -1,4 +1,6 @@
 <template>
+    <p class="text-center fs-3">Bienvenido {{usuario.apellido}} {{usuario.nombre}}</p>
+    <p class="fw-bolder fs-1 text-center">Estaciones activas</p>
     <div class="container text-center" v-if="stateEstaciones.loading">
         <div class="spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -7,11 +9,11 @@
     <div class="container" v-else>
         <div class="row">
             <GMapMap
-                class="bg-secondary p-2 border-2 rounded-2"
+                class="bg-secondary p-2 border-2 rounded-2 col-12 col-md-6"
                 :center="{lat: -44, lng: -69}"
                 :zoom="6"
                 map-type-id="terrain"
-                style="width: 100vw; height: 400px"
+                style="height: 400px"
             >
                 <GMapMarker
                     :key="index"
@@ -36,26 +38,27 @@
                     </GMapInfoWindow>
                 </GMapMarker>
             </GMapMap>
-            <p class="fw-bolder fs-1 text-center">Estaciones activas</p>
-            <table class="table table-hover table-bordered">
-                <thead>
-                <tr>
-                    <th @click="sort('id')">ID <i :class="isActive('id')"></i></th>
-                    <th @click="sort('denominacion')">Denominación <i :class="isActive('denominacion')"></i></th>
-                    <th @click="sort('latitud')">Latitud <i :class="isActive('latitud')"></i></th>
-                    <th @click="sort('longitud')">Longitud <i :class="isActive('longitud')"></i></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="estacion in stateEstaciones.data" :key="estacion.id" @click="router.push({name:'VerEstacion', params:{id: estacion.Código}})">
-                    <td>{{estacion.Código}}</td>
-                    <td>{{estacion.Denominación}}</td>
-                    <td>{{estacion.Latitud}}</td>
-                    <td>{{estacion.Longitud}}</td>
-                </tr>
+            <div class="col-12 col-md-6">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th @click="sort('id')">ID <i :class="isActive('id')"></i></th>
+                        <th @click="sort('denominacion')">Denominación <i :class="isActive('denominacion')"></i></th>
+                        <th @click="sort('latitud')">Latitud <i :class="isActive('latitud')"></i></th>
+                        <th @click="sort('longitud')">Longitud <i :class="isActive('longitud')"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="estacion in stateEstaciones.data" :key="estacion.id" @click="router.push({name:'VerEstacion', params:{id: estacion.Código}})">
+                        <td>{{estacion.Código}}</td>
+                        <td>{{estacion.Denominación}}</td>
+                        <td>{{estacion.Latitud}}</td>
+                        <td>{{estacion.Longitud}}</td>
+                    </tr>
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
@@ -107,6 +110,7 @@ export default {
             openedMarkerID.value = id
             getUltimaActualizacion(id);
         }
+        let usuario = ref(JSON.parse(window.localStorage.getItem('usuario')));
 
         return{
             stateEstaciones,
@@ -116,6 +120,7 @@ export default {
             isActive,
             openedMarkerID,
             openMarker,
+            usuario
         }
     }
 }

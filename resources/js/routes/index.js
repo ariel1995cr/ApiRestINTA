@@ -26,7 +26,7 @@ const routes = [
         children: [
             {
                 path: '/admin',
-                component: IndexAdminPage,
+                component: IndexEstaciones,
                 name: 'AdminIndex',
             },
             {

@@ -54,10 +54,32 @@ class EstacionesController extends Controller
 
     public function getHistoricoMedicion(Estacion $estacion){
         $historicoEstado = DB::table('estacion_medicion as em')
-            ->select('em.id','em.created_at', 'em.updated_at', 'em.codigoMedicion', 'cm.unidad', 'cm.descripcion', 'em.valorMedicion')
+            ->select('em.updated_at')
             ->where('codigoEstacion', $estacion->id)
-            ->leftJoin('codigomedicion as cm','cm.id','=','em.codigoMedicion');
-        $historicoEstado->orderByDesc('em.id');
-        return $historicoEstado->paginate();
+            ->groupBy('em.updated_at');
+        $historicoEstado->orderByDesc('em.updated_at');
+
+        $historicoEstado = $historicoEstado->paginate();
+
+        $historicoEstado->getCollection()->map(function($item) use ($estacion){
+           $item->mediciones = DB::table('estacion_medicion as em')
+               ->select('em.id', 'em.codigoEstacion', 'em.valorMedicion', 'cm.descripcion', 'cm.unidad')
+               ->where('em.updated_at', $item->updated_at)
+               ->where('em.codigoEstacion', $estacion->id)
+               ->leftJoin('codigomedicion as cm','cm.id','=','em.codigoMedicion')
+               ->get();
+        });
+
+        return response()->json($historicoEstado);
+    }
+
+    public function updateCoordenadas(Request $request, Estacion $estacion){
+        $estacion->latitud = $request->lat;
+        $estacion->longitud = $request->lng;
+        $estacion->save();
+        return response()->json([
+            'data' => $estacion,
+            'msg' => 'Estacion actualizada correctamente.',
+        ]);
     }
 }

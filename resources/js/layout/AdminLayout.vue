@@ -14,15 +14,6 @@
                     </li>
                 </router-link>
                 <router-link
-                    :to="{name: 'EstacionesIndex'}"
-                    class="nav-link px-2 link-light"
-                    exact
-                >
-                    <li>
-                        Estaciones
-                    </li>
-                </router-link>
-                <router-link
                     :to="{name: 'UsuariosIndex'}"
                     class="nav-link px-2 link-light"
                     exact

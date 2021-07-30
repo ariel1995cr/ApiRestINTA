@@ -1,9 +1,12 @@
 import AxiosInstance from "./AxiosInstance";
 
-import { reactive } from "vue";
-//import { useToast } from "primevue/usetoast";
+import {inject, reactive} from "vue";
+import {useVueSweetAlert2} from "../useSwal2";
 
 export const EstacionesServices = () =>{
+    const $swal = useVueSweetAlert2();
+    const InjectDirectly = inject("$swal");
+
     const state = reactive({
         loading: false,
         error: false,
@@ -49,10 +52,32 @@ export const EstacionesServices = () =>{
         state.loading = false;
     }
 
+    const updateEstacion = async(data)=>{
+        state.loading = true;
+        let response = await AxiosInstance.post('/api/v1/admin/estacion/'+data.value.id,{
+            ...data.value
+        })
+            .then(resp=>{
+                $swal.fire({
+                    icon: "success",
+                    title: "Coordenada actualizada.",
+                    text: resp.data.message,
+                });
+                return true;
+            })
+            .catch(err=>{
+                state.error = true;
+                return false;
+            })
+        state.loading = false;
+        return response;
+    }
+
 
     return {
         state,
         getEstaciones,
         getEstacion,
+        updateEstacion
     }
 }
