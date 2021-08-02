@@ -9,11 +9,11 @@
     <div class="container" v-else>
         <div class="row">
             <GMapMap
-                class="bg-secondary p-2 border-2 rounded-2 col-12 col-md-6"
+                class="bg-secondary p-2 border-2 rounded-2 col-12 col-md-5 position-fixed"
                 :center="{lat: -44, lng: -69}"
                 :zoom="6"
                 map-type-id="terrain"
-                style="height: 400px"
+                style="height: 400px; left: 20px"
             >
                 <GMapMarker
                     :key="index"
@@ -38,7 +38,7 @@
                     </GMapInfoWindow>
                 </GMapMarker>
             </GMapMap>
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-6 offset-md-6">
                 <table class="table table-hover table-bordered">
                     <thead>
                     <tr>

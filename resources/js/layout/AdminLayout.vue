@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-2">
+    <div class="container-fluid mt-2">
         <main class="p-2 bg-light bg-gradient border-2 rounded-2 p-2" style="height: 90vh !important; overflow-x: hidden !important">
             <router-view></router-view>
         </main>

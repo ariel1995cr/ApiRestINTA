@@ -1,13 +1,13 @@
 <template>
-    <div class="container text-center" v-if="stateEstacion.loading">
+    <div class="container-fluid text-center" v-if="stateEstacion.loading">
         <div class="spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
-    <div class="container" v-else>
-        <div class="row text-center bg-secondary p-2 border-2 rounded-2">
+    <div class="container-fluid" v-else>
+        <div class="row text-center bg-secondary p-3 border-2 rounded-2 sticky-top position-sticky">
             <p class="fw-bolder fs-1 text-center text-light">{{ stateEstacion.data.denominacion }}</p>
-            <img class="w-50 mx-auto rounded-2" :src="`/storage/estaciones/${stateEstacion.data.id}.png`">
+            <img height="285" width="285" class="w-50 mx-auto rounded-2" :src="`/storage/estaciones/${stateEstacion.data.id}.png`">
             <div class="w-50">
             <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-center" v-for="medicion in stateEstacion.data.ultimaMedicion">
