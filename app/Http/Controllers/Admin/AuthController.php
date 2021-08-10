@@ -17,8 +17,23 @@ class AuthController extends Controller
     public function __construct(){
         $this->usuario = new User();
     }
-    public function index(){
-        return $this->usuario::paginate();
+    public function index($props = null){
+        if($props){
+            $data = json_decode($props);
+        }
+
+        $usuarios = $this->usuario;
+
+        if(isset($data->pagination->sortBy)){
+            if(isset($data->pagination->descending)){
+                $orientation = 'desc';
+            }else{
+                $orientation = 'asc';
+            }
+            $usuarios = $usuarios->orderBy($data->pagination->sortBy,$orientation);
+        }
+
+        return $usuarios->paginate();
     }
 
     public function login(Request $request)
@@ -61,11 +76,21 @@ class AuthController extends Controller
         $user->nombre = $request->nombre;
         $user->apellido = $request->apellido;
         $user->rol = $request->rol;
+        $user->email = $request->email;
         $user->update();
 
         return response()->json([
             'data' => $this->usuario,
             'msg' => 'Usuario actualizado correctamente.',
+        ]);
+    }
+
+    public function delete(User $user)
+    {
+        $user->delete();
+        return response()->json([
+            'data' => $user,
+            'msg' => 'Usuario eliminado correctamente.',
         ]);
     }
 

@@ -10,7 +10,7 @@
             <img height="285" width="285" class="w-50 mx-auto rounded-2" :src="`/storage/estaciones/${stateEstacion.data.id}.png`">
             <div class="w-50">
             <ul class="list-group">
-                <li class="list-group-item d-flex justify-content-between align-items-center" v-for="medicion in stateEstacion.data.ultimaMedicion">
+                <li class="list-group-item d-flex justify-content-between align-items-center" v-for="(medicion) in stateEstacion.data.ultimaMedicion">
                     {{medicion.descripcion}}:
                     <span class="badge bg-success rounded-pill">{{medicion.valorMedicion}} {{medicion.unidad}}</span>
                 </li>

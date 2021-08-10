@@ -52,7 +52,16 @@ class EstacionesController extends Controller
             ->get();
     }
 
-    public function getHistoricoMedicion(Estacion $estacion){
+    public function getHistoricoMedicion(Estacion $estacion, Request $request){
+        if ($request->has('props')) {
+            $props = json_decode($request->props);
+            $page = $props->pagination->page ?? 1;
+            $sortBy = $props->pagination->sortBy ?? null;
+            $descending =  isset($props->pagination->descending) ? 'desc' : 'asc';
+            $perPage =  isset($props->pagination->rowsPerPage) ?? 10;
+        }
+
+
         $historicoEstado = DB::table('estacion_medicion as em')
             ->select('em.updated_at')
             ->where('codigoEstacion', $estacion->id)

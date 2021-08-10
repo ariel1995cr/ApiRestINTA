@@ -12,7 +12,7 @@ export default {
         let usuario = ref(JSON.parse(window.localStorage.getItem('usuario')));
         const menu = reactive([
             {
-                title: 'Estaciones',
+                title: 'Usuarios',
                 to: 'EstacionesIndex'
             },
             {

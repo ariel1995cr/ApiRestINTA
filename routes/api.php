@@ -44,6 +44,8 @@ Route::prefix('v1')->group(function () {
         Route::middleware('auth:sanctum')->get("user", [AuthController::class, 'profile']);
         Route::middleware('auth:sanctum')->get("refresh", [AuthController::class, 'refresh']);
 
-        Route::apiResource('user',AuthController::class)->only('store', 'index', 'update');
+        Route::apiResource('user',AuthController::class)->only('store', 'update');
+        Route::get('user/{props?}', [AuthController::class, 'index']);
+        Route::delete('user/{user}', [AuthController::class, 'delete']);
     });
 });
