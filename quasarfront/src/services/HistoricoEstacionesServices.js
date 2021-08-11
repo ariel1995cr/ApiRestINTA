@@ -22,6 +22,7 @@ export const HistoricoEstacionServices = () => {
     const url = '/api/v1/admin/estacion/' + id + '/historico/?props=' + JSON.stringify(props) + '&page=' + props.pagination.page
     await api.get(url)
       .then(resp => {
+        columns.value = []
         columns.value.push({
           name: 'updated_at',
           label: 'Fecha medicion',

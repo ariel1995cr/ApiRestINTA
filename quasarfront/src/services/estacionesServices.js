@@ -52,9 +52,39 @@ export const EstacionesServices = () => {
     Loading.hide()
   }
 
+  const updateEstacion = async (data) => {
+    Loading.show({
+      spinner: QSpinnerGears
+    })
+    const response = await api.post('/api/v1/admin/estacion/' + data.value.id, {
+      ...data.value
+    })
+      .then(response => {
+        data.value = response.data
+        $q.notify({
+          message: response.data.msg,
+          type: 'positive'
+        })
+        return true
+      })
+      .catch(error => {
+        console.log(error)
+        $q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Contactese con el administrador.',
+          icon: 'report_problem'
+        })
+        return false
+      })
+    Loading.hide()
+    return response
+  }
+
   return {
     data,
     getEstaciones,
-    getEstacion
+    getEstacion,
+    updateEstacion
   }
 }

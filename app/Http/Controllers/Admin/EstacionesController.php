@@ -61,7 +61,6 @@ class EstacionesController extends Controller
             $perPage =  isset($props->pagination->rowsPerPage) ?? 10;
         }
 
-
         $historicoEstado = DB::table('estacion_medicion as em')
             ->select('em.updated_at')
             ->where('codigoEstacion', $estacion->id)
@@ -70,13 +69,17 @@ class EstacionesController extends Controller
 
         $historicoEstado = $historicoEstado->paginate();
 
-        $historicoEstado->getCollection()->map(function($item) use ($estacion){
-           $item->mediciones = DB::table('estacion_medicion as em')
+        $historicoEstado->getCollection()->map(function($item) use ($estacion, $props){
+           $query = DB::table('estacion_medicion as em')
                ->select('em.id', 'em.codigoEstacion', 'em.valorMedicion', 'cm.descripcion', 'cm.unidad')
                ->where('em.updated_at', $item->updated_at)
                ->where('em.codigoEstacion', $estacion->id)
-               ->leftJoin('codigomedicion as cm','cm.id','=','em.codigoMedicion')
-               ->get();
+               ->leftJoin('codigomedicion as cm','cm.id','=','em.codigoMedicion');
+           if(isset($props->filter)){
+               $query = $query->where('em.valorMedicion', 'like',$props->filter.'%');
+           }
+
+           $item->mediciones = $query->get();
         });
 
         return response()->json($historicoEstado);
