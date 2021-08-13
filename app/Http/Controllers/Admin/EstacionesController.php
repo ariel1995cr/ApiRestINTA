@@ -15,14 +15,19 @@ class EstacionesController extends Controller
     //
     public function getAll($estacion=null)
     {
-        $estaciones = Estacion::select('id as Código', 'denominacion as Denominación', 'latitud as Latitud', 'longitud as Longitud');
+        $estaciones = Estacion::select('id as Código', 'id as id', 'denominacion as Denominación', 'latitud as Latitud', 'longitud as Longitud');
 
         if($estacion){
             $filter = json_decode($estacion);
             $estaciones->orderBy($filter->campo, $filter->direction);
         }
+        $estaciones = $estaciones->get();
 
-        return $estaciones->get();
+        foreach ($estaciones as $estacion) {
+            $ultimaMedicion = DB::table('estacion_medicion')->select('updated_at')->where('codigoEstacion', $estacion->id)->groupBy('updated_at')->get()->last();
+            $estacion->ultimaMedicion = Mediciones::select('id','codigoEstacion','codigoMedicion', 'created_at', 'updated_at', 'valorMedicion')->where('codigoEstacion', $estacion->id)->orderBy('created_at')->where('updated_at', $ultimaMedicion->updated_at)->get();
+        }
+        return response()->json($estaciones);
     }
 
     public function getEstacion(Estacion $estacion){

@@ -15,7 +15,15 @@
 
       <q-card-section>
         <q-input v-model="user.email" class="q-mb-md" outlined label="Email" />
-        <q-input v-model="user.password" outlined label="Contraseña" />
+        <q-input v-model="user.password" outlined label="Contraseña" :type="isPwd ? 'password' : 'text'">
+          <template v-slot:append>
+            <q-icon
+              :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd"
+            />
+          </template>
+        </q-input>
         <q-btn class="full-width q-mt-md" color="green" label="Ingresar" @click="login(user)" />
         <q-checkbox v-model="user.aceptoTerminos" class="text-dark" label="Acepto Terminos y condiciones" color="green" />
       </q-card-section>
@@ -23,7 +31,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import { AuthServices } from '../services/authServices'
 
 export default defineComponent({
@@ -40,7 +48,8 @@ export default defineComponent({
     return {
       user,
       data,
-      login
+      login,
+      isPwd: ref(true)
     }
   }
 })
