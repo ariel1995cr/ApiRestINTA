@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@fawmi/vue-google-maps": "^0.8.7",
+        "billboard.js": "^3.2.0-next.3",
         "bootstrap": "^5.0.0-beta3",
         "bootstrap-icons": "^1.5.0",
         "jquery": "^3.6.0",

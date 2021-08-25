@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MedicionesController;
 use App\Http\Controllers\CodigoMedicionesController;
 use App\Http\Controllers\EstacionesController;
 use App\Http\Controllers\Admin\AuthController;
@@ -47,5 +48,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('user',AuthController::class)->only('store', 'update');
         Route::get('user/{props?}', [AuthController::class, 'index']);
         Route::delete('user/{user}', [AuthController::class, 'delete']);
+
+        Route::get('estacion/{estacion}/medicion/{medicion}', [MedicionesController::class, 'getHistoricoEstacion']);
     });
 });
