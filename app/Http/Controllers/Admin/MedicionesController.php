@@ -43,7 +43,11 @@ class MedicionesController extends Controller
 
 
         $mediaTemperatura = Mediciones::select('valorMedicion', DB::raw("DATE_FORMAT(updated_at, '%Y-%m-%d') as date"))
-            ->estacion($estacion)->temperatura()->groupBy('valorMedicion', 'date')->get()->avg('valorMedicion');
+            ->estacion($estacion)->temperatura()->groupBy('valorMedicion', 'date')->get();
+        foreach ($mediaTemperatura as $item) {
+            $item->valorMedicion = str_replace(',','.', $item['valorMedicion']);
+        }
+        $mediaTemperatura = $mediaTemperatura->avg('valorMedicion');
 
         $mediaHumedad= Mediciones::select('valorMedicion', DB::raw("DATE_FORMAT(updated_at, '%Y-%m-%d') as date"))
             ->estacion($estacion)->humedad()->groupBy('valorMedicion', 'date')->get()->avg('valorMedicion');

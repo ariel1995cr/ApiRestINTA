@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::get('/fotosGoogle', function () {
-    $estaciones = Estacion::where('identificacion', 'INTA')->get();
+    $estaciones = Estacion::where('identificacion', 'IPA')->get();
     foreach ($estaciones as $estacion) {
-        $url = 'https://maps.googleapis.com/maps/api/staticmap?center=-'.abs($estacion->latitud).',-'.abs($estacion->longitud).'&zoom=8&size=900x400&key=AIzaSyD62MSPtoCBTPdiiI91RRJl0o0qdEsBdII&markers=color:red%7Clabel:E%7C'.'-'.abs($estacion->latitud).',-'.abs($estacion->longitud);
+        $url = 'https://maps.googleapis.com/maps/api/staticmap?center=-'.abs($estacion->latitud).',-'.abs($estacion->longitud).'&zoom=8&size=900x400&key=&markers=color:red%7Clabel:E%7C'.'-'.abs($estacion->latitud).',-'.abs($estacion->longitud);
         $img = public_path('storage/estaciones') . '/'.$estacion->id.'.png';
         file_put_contents($img, file_get_contents($url));
     }
