@@ -16,9 +16,10 @@ class Mediciones extends Model
      *
      * @var array
      */
+    protected $fillable = ['id', 'created_at'];
+
     protected $casts = [
-        'updated_at'=>'datetime:d-m-Y h:i',
-        'created_at'=>'datetime:d-m-Y h:i',
+        'created_at' => 'string',
     ];
 
     public function scopeEstacion($query, $estacion){
@@ -43,5 +44,9 @@ class Mediciones extends Model
 
     public function scopePrecipitacion($query){
         return $query->where('codigoMedicion', 10);
+    }
+
+    public function estacion(){
+        return $this->belongsTo(Estacion::class,'codigoEstacion','id');
     }
 }

@@ -8,7 +8,7 @@ export const HistoricoEstacionServices = () => {
   const $q = useQuasar()
   const columns = ref([])
   const pagination = ref({
-    sortBy: 'desc',
+    sortBy: 'updated_at',
     descending: false,
     page: 1,
     rowsPerPage: 10,

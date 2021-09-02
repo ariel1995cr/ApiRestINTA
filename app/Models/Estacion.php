@@ -12,4 +12,12 @@ class Estacion extends Model
     protected $table = 'estaciones';
 
     protected $fillable = ['denominacion', 'idExterna', 'identificacion'];
+
+    protected $casts = [
+        'created_at' => 'string',
+    ];
+
+    public function mediciones(){
+        return $this->hasMany(Mediciones::class,'codigoEstacion','id');
+    }
 }

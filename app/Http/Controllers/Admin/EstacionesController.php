@@ -68,26 +68,37 @@ class EstacionesController extends Controller
 
         $historicoEstado = DB::table('estacion_medicion as em')
             ->select('em.updated_at')
-            ->where('codigoEstacion', $estacion->id)
-            ->groupBy('em.updated_at');
+            ->where('codigoEstacion', $estacion->id);
+
+        if(isset($props->filter)){
+            $historicoEstado = $historicoEstado->where('em.valorMedicion', 'like',$props->filter.'%');
+        }
+
+        $historicoEstado->groupBy('em.updated_at');
         $historicoEstado->orderByDesc('em.updated_at');
 
         $historicoEstado = $historicoEstado->paginate();
 
         $historicoEstado->getCollection()->map(function($item) use ($estacion, $props){
-           $query = DB::table('estacion_medicion as em')
-               ->select('em.id', 'em.codigoEstacion', 'em.valorMedicion', 'cm.descripcion', 'cm.unidad')
-               ->where('em.updated_at', $item->updated_at)
-               ->where('em.codigoEstacion', $estacion->id)
-               ->leftJoin('codigomedicion as cm','cm.id','=','em.codigoMedicion');
-           if(isset($props->filter)){
-               $query = $query->where('em.valorMedicion', 'like',$props->filter.'%');
-           }
-
-           $item->mediciones = $query->get();
+            $query = DB::table('estacion_medicion as em')
+                ->select('em.id', 'em.codigoEstacion', 'em.valorMedicion', 'cm.descripcion', 'cm.unidad')
+                ->where('em.updated_at', $item->updated_at)
+                ->where('em.codigoEstacion', $estacion->id)
+                ->leftJoin('codigomedicion as cm','cm.id','=','em.codigoMedicion');
+            $item->mediciones = $query->get();
         });
 
-        return response()->json($historicoEstado);
+        return $historicoEstado;
+
+
+        $estaciones =  Estacion::where('id',$estacion->id)->whereHas('mediciones', function ($q){
+            $q->select('created_at');
+            $q->where('valorMedicion','like','13%');
+        })->with(['mediciones'=> function($q){
+        }])->get();
+
+        return $estaciones;
+
     }
 
     public function updateCoordenadas(Request $request, Estacion $estacion){
