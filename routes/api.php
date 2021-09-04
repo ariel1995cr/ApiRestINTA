@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\MedicionesController;
 use App\Http\Controllers\CodigoMedicionesController;
 use App\Http\Controllers\EstacionesController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\EstadisticaController;
 use App\Http\Controllers\Admin\EstacionesController as EstacionesControllerApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,7 @@ Route::prefix('v1')->group(function () {
         Route::get('estacion/{estacion}', [EstacionesControllerApi::class, 'getEstacion']);
         Route::get('estacion/{estacion}/historico', [EstacionesControllerApi::class, 'getHistoricoMedicion']);
         Route::post('estacion/{estacion}', [EstacionesControllerApi::class, 'updateCoordenadas']);
+        Route::get('estacion/{estacion?}/estadistica/{medicion?}', [EstadisticaController::class, 'obtenerEstadistica']);
 
         Route::middleware('auth:sanctum')->get("user", [AuthController::class, 'profile']);
         Route::middleware('auth:sanctum')->get("refresh", [AuthController::class, 'refresh']);

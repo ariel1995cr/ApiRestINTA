@@ -46,7 +46,5 @@ class Mediciones extends Model
         return $query->where('codigoMedicion', 10);
     }
 
-    public function estacion(){
-        return $this->belongsTo(Estacion::class,'codigoEstacion','id');
-    }
+
 }
