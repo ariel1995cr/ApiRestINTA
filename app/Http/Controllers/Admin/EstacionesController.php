@@ -96,7 +96,7 @@ class EstacionesController extends Controller
             $item->mediciones = $query->get();
         });
 
-        return $historicoEstado;
+        return response()->json($historicoEstado);
     }
 
     public function updateCoordenadas(Request $request, Estacion $estacion){
