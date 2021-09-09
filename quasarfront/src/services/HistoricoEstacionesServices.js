@@ -19,8 +19,7 @@ export const HistoricoEstacionServices = () => {
     Loading.show({
       spinner: QSpinnerGears
     })
-    const url = '/api/v1/admin/estacion/' + id + '/historico/?props=' + JSON.stringify(props) + '&page=' + props.pagination.page
-    await api.get(url)
+    await api.get(`/api/v1/admin/estacion/${id}/historico/?props=${JSON.stringify(props)}&page=${props.pagination.page}`)
       .then(resp => {
         columns.value = []
         columns.value.push({
