@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\MedicionesController;
+use App\Http\Controllers\Admin\PDFController;
 use App\Http\Controllers\CodigoMedicionesController;
 use App\Http\Controllers\EstacionesController;
 use App\Http\Controllers\Admin\AuthController;
@@ -52,5 +53,9 @@ Route::prefix('v1')->group(function () {
         Route::delete('user/{user}', [AuthController::class, 'delete']);
 
         Route::get('estacion/{estacion}/medicion/{medicion}', [MedicionesController::class, 'getHistoricoEstacion']);
+
+        Route::get('estacion/{estacion}/medicionesPosibles', [CodigoMedicionesController::class, 'getMedicionesPosibles']);
+
+        Route::post('estacion/exportar/pdf', [PDFController::class, 'generarPdf']);
     });
 });
