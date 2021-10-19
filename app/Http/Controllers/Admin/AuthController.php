@@ -22,7 +22,7 @@ class AuthController extends Controller
             $data = json_decode($props);
         }
 
-        $usuarios = $this->usuario->select('id', 'nombre', 'apellido', 'email', 'rol', 'created_at', 'updated_at');
+        $usuarios = $this->usuario->select('id', 'dni','nombre', 'apellido', 'email', 'rol', 'created_at', 'updated_at');
 
         if(isset($data->pagination->sortBy)){
             if(isset($data->pagination->descending)){

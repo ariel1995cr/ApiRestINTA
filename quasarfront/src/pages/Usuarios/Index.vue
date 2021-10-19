@@ -40,6 +40,11 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
+          <q-input v-model="userSelected.dni" label="DNI" :error="errors.hasOwnProperty('dni')">
+            <template v-slot:error>
+              {{errors?.dni[0]}}
+            </template>
+          </q-input>
           <q-input v-model="userSelected.nombre" label="Nombre" :error="errors.hasOwnProperty('nombre')">
             <template v-slot:error>
               {{errors?.nombre[0]}}
@@ -87,6 +92,7 @@ export default defineComponent({
     const { errors, data, getUsuarios, updateUsuario, borrarUsuario, createUsuario } = UsuariosServices()
 
     const columns = [
+      { name: 'dni', label: 'DNI', field: 'dni', sortable: false },
       { name: 'nombre', label: 'Nombre', field: 'nombre', sortable: true },
       { name: 'apellido', label: 'Apellido', field: 'apellido', sortable: true },
       { name: 'email', label: 'Email', field: 'email', sortable: true },
@@ -132,6 +138,7 @@ export default defineComponent({
         title.value = 'Editar usuario'
       } else {
         userSelected.value = {
+          dni: '',
           nombre: '',
           apellido: '',
           email: '',
