@@ -4,7 +4,7 @@ import { useQuasar, LocalStorage } from 'quasar'
 
 export const AuthServices = () => {
   const $q = useQuasar()
-  const data = ref(null)
+  const dataAuth = ref(null)
 
   function login (data) {
     if (!data.aceptoTerminos) {
@@ -21,6 +21,7 @@ export const AuthServices = () => {
         .then(response => {
           api.defaults.headers.common.Authorization = 'Bearer ' + response.data.access_token
           LocalStorage.set('user', JSON.stringify(response.data.usuario))
+          LocalStorage.set('access_token', `Bearer ${response.data.access_token}`)
           this.$router.push('/admin')
         })
         .catch(error => {
@@ -36,7 +37,7 @@ export const AuthServices = () => {
   }
 
   return {
-    data,
+    dataAuth,
     login
   }
 }

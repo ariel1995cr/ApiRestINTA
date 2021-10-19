@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\EstadisticaController;
 use App\Http\Controllers\Admin\EstacionesController as EstacionesControllerApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ConsultaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,5 +58,7 @@ Route::prefix('v1')->group(function () {
         Route::get('estacion/{estacion}/medicionesPosibles', [CodigoMedicionesController::class, 'getMedicionesPosibles']);
 
         Route::post('estacion/exportar/pdf', [PDFController::class, 'generarPdf']);
+
+        Route::post('consulta', [ConsultaController::class, 'realizarConsulta']);
     });
 });

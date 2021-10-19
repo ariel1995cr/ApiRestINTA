@@ -15,7 +15,7 @@ class EstacionesController extends Controller
     //
     public function getAll($estacion=null)
     {
-        $estaciones = Estacion::select('id as Código', 'id as id', 'denominacion as Denominación', 'latitud as Latitud', 'longitud as Longitud');
+        $estaciones = Estacion::select('id as Código', 'id as id', 'denominacion as Denominación', 'identificacion','latitud as Latitud', 'longitud as Longitud');
 
         if($estacion){
             $filter = json_decode($estacion);

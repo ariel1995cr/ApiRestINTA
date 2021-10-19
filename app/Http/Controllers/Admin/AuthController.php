@@ -56,11 +56,18 @@ class AuthController extends Controller
 
     public function store(StoreUserRequest $request)
     {
+        $this->usuario->dni = $request->dni;
         $this->usuario->nombre = $request->nombre;
         $this->usuario->apellido = $request->apellido;
         $this->usuario->email = $request->email;
-        $this->usuario->password = 123456;
-        $this->usuario->rol = $request->rol;
+        if($request->has('password')){
+            $this->usuario->password = $request->password;
+        }else{
+            $this->usuario->password = 123456;
+        }
+        if($request->has('rol')){
+            $this->usuario->rol = $request->rol;
+        }
         $this->usuario->save();
 
         event(new UserRegistered($this->usuario));
