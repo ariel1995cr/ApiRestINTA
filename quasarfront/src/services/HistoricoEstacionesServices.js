@@ -24,22 +24,27 @@ export const HistoricoEstacionServices = () => {
         columns.value = []
         columns.value.push({
           name: 'updated_at',
+          field: 'updated_at',
           label: 'Fecha medicion',
           align: 'left',
           sortable: true
         })
-        resp.data.data[0].mediciones.forEach((el) => {
+        resp.data[0].mediciones.forEach((el, index) => {
           columns.value.push({
             name: el.descripcion,
+            field: (row) => {
+              if (row?.mediciones[index]?.valorMedicion) {
+                return row?.mediciones[index]?.valorMedicion
+              } else {
+                return '-'
+              }
+            },
             label: el.descripcion,
             align: 'left',
             sortable: true
           })
         })
         data.value = resp.data
-        pagination.value.rowsNumber = resp.data.total
-        pagination.value.rowsPerPage = resp.data.per_page
-        pagination.value.page = resp.data.current_page
       })
       .catch(err => {
         console.log(err)

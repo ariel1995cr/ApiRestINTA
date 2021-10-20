@@ -84,17 +84,17 @@ class EstacionesController extends Controller
             $historicoEstado->orderByDesc('em.updated_at');
         }
 
-        $historicoEstado = $historicoEstado->paginate();
+        $historicoEstado = $historicoEstado->get();
 
-        $historicoEstado->getCollection()->map(function($item) use ($estacion, $props, $sortBy, $descending){
+        $historicoEstado->map(function($item) use ($estacion, $props, $sortBy, $descending){
             $query = DB::table('estacion_medicion as em')
                 ->select('em.id', 'em.codigoEstacion', 'em.valorMedicion', 'cm.descripcion', 'cm.unidad')
                 ->where('em.updated_at', $item->updated_at)
                 ->where('em.codigoEstacion', $estacion->id)
                 ->leftJoin('codigomedicion as cm','cm.id','=','em.codigoMedicion');
-
             $item->mediciones = $query->get();
         });
+
 
         return response()->json($historicoEstado);
     }

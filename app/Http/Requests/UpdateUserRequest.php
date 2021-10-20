@@ -28,6 +28,7 @@ class UpdateUserRequest extends FormRequest
             'nombre'=>'required|string|min:2',
             'apellido'=>'required|string|min:2',
             'email'=>'required|email|unique:users,email,'.$this->user->id,
+            'dni'=>'required|digits_between:7,8|unique:users,dni,'.$this->user->id,
             'rol'=>'required',
         ];
     }
