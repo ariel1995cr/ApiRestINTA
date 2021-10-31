@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Recaptcha;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Password;
 
@@ -31,7 +32,8 @@ class StoreUserRequest extends FormRequest
             'apellido'=>'required|string|min:2',
             'email'=>'required|email|unique:users,email',
             'password' => 'required','confirmed','min:6',
-            'password_confirmation' => 'required|same:password'
+            'password_confirmation' => 'required|same:password',
+            'recaptcha' => 'required', new Recaptcha(),
         ];
     }
 }

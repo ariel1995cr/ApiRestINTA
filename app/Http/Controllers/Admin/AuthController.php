@@ -45,6 +45,14 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', $request['email'])->firstOrFail();
+
+        if($user->email_verified_at == null){
+            $user->sendEmailVerificationNotification();
+            return response()->json([
+                'message'=>'Tu email no esta verificado. Te enviamos tu email nuevamente al correo.'
+            ], 404);
+        }
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -70,7 +78,7 @@ class AuthController extends Controller
         }
         $this->usuario->save();
 
-        event(new UserRegistered($this->usuario));
+        $this->usuario->sendEmailVerificationNotification();
 
         return response()->json([
             'data' => $this->usuario,

@@ -31,6 +31,14 @@
         <p class="text-dark q-mt-md" >Todavia no tenes tu usuario?</p>
         <q-btn class="full-width" color="blue" label="Registrarme" @click="registerPage" />
       </q-card-section>
+
+      <q-img
+        src="../assets/logo_politicas_hidricas.png"
+        class="q-mx-sm"
+        :ratio="1"
+        fit="contain"
+        height="100px"
+      />
     </q-card>
     <q-card dark bordered class="bg-grey-1 my-card col-12 q-mt-lg" v-else>
       <q-card-section>
@@ -73,6 +81,19 @@
             {{errors.password_confirmation[0]}}
           </template>
         </q-input>
+        <vueRecaptcha siteKey="6LdkE94cAAAAAMXIDQI5lcXHGhII13pp2zUg-zLY"
+                      class="q-mb-md"
+                      size="normal"
+                      theme="light"
+                      :tabindex="0"
+                      @verify="recaptchaVerified"
+                      @expire="recaptchaExpired"
+                      @fail="recaptchaFailed"
+                      ref="vueRecaptcha">
+        </vueRecaptcha>
+        <span class="text-red-14" v-if="errores?.recaptcha">
+          {{errores.recaptcha[0]}}
+        </span>
         <q-btn @click="registrarUsuario(newUser)" class="full-width q-mt-sm" color="blue" label="Registrarme" />
       </q-card-section>
     </q-card>
@@ -82,9 +103,13 @@
 import { defineComponent, reactive, ref } from 'vue'
 import { AuthServices } from '../services/authServices'
 import { UsuariosServices } from 'src/services/usuariosServices'
+import vueRecaptcha from 'vue3-recaptcha2'
 
 export default defineComponent({
   name: 'Login',
+  components: {
+    vueRecaptcha
+  },
   setup () {
     const user = reactive({
       email: '',
@@ -98,7 +123,8 @@ export default defineComponent({
       apellido: '',
       dni: '',
       password: '',
-      password_confirmation: ''
+      password_confirmation: '',
+      recaptcha: ''
     })
 
     const mode = ref('login')
@@ -118,6 +144,7 @@ export default defineComponent({
       newUser.dni = ''
       newUser.password = ''
       newUser.password_confirmation = ''
+      newUser.recaptcha = ''
     }
 
     const registrarUsuario = async () => {
@@ -132,6 +159,16 @@ export default defineComponent({
 
     const { errors, data, createUsuario } = UsuariosServices()
 
+    const recaptchaVerified = (response) => {
+      newUser.recaptcha = response
+    }
+    const recaptchaExpired = () => {
+      this.$refs.vueRecaptcha.reset()
+    }
+
+    const recaptchaFailed = () => {
+    }
+
     return {
       user,
       dataAuth,
@@ -144,7 +181,10 @@ export default defineComponent({
       registerPage,
       loginPage,
       isPwd: ref(true),
-      registrarUsuario
+      registrarUsuario,
+      recaptchaVerified,
+      recaptchaExpired,
+      recaptchaFailed
     }
   }
 })

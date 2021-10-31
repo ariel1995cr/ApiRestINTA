@@ -28,14 +28,12 @@ Route::get('/fotosGoogle', function () {
 });
 
 
+require __DIR__ . '/auth.php';
+
 
 Route::get('/{any}', function () {
     return view('app');
 })->where('any', '.*');
-
-
-
-
 
 
 Route::get('/consumirServicio', function () {
@@ -140,5 +138,3 @@ Route::get('/consumirServicio', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
-
-require __DIR__ . '/auth.php';
