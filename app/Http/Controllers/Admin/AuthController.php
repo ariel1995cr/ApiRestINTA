@@ -45,13 +45,18 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        if(!Auth::attempt($request->only('email', 'password'))){
+        $array = [
+            'dni' => $request->email,
+            'password' => $request->password,
+        ];
+
+        if(!(Auth::attempt($request->only('email', 'password')) || Auth::attempt($array))){
             return response()->json([
                 'message'=>'Invalid login.'
             ], 404);
         }
 
-        $user = User::where('email', $request['email'])->firstOrFail();
+        $user = User::where('email', $request['email'])->orWhere('dni', $request['email'])->firstOrFail();
 
         if($user->email_verified_at == null){
             $user->sendEmailVerificationNotification();

@@ -16,7 +16,7 @@
       <q-separator dark inset />
 
       <q-card-section>
-        <q-input v-model="user.email" class="q-mb-md" outlined label="Email" />
+        <q-input v-model="user.email" class="q-mb-md" outlined label="Email o DNI" />
         <q-input v-model="user.password" outlined label="Contraseña" :type="isPwd ? 'password' : 'text'">
           <template v-slot:append>
             <q-icon
