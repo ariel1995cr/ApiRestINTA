@@ -52,6 +52,8 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('user',AuthController::class)->only('store', 'update');
         Route::get('user/{props?}', [AuthController::class, 'index']);
         Route::delete('user/{user}', [AuthController::class, 'delete']);
+        Route::post('resetPassword', [AuthController::class, 'resetPassword']);
+        Route::post('changePassword', [AuthController::class, 'changePassword']);
 
         Route::get('estacion/{estacion}/medicion/{medicion}', [MedicionesController::class, 'getHistoricoEstacion']);
 

@@ -4,11 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\UserRegistered;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\changePasswordRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use http\Env\Response;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -124,6 +131,35 @@ class AuthController extends Controller
             'usuario' => Auth::user(),
             'token_type' => 'Bearer',
         ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 422);
+        }
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return response()->json(['msg'=>'Email para validar contraseña enviado correctamente'], 202);
+    }
+
+    public function changePassword(changePasswordRequest $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        $user->password = $request->password;
+        $user->remember_token = Str::random(60);
+        $user->save();
+
+        event(new PasswordReset($user));
+
+        return response()->json(['msg'=>'Contraseña modificada correctamente.'], 202);
     }
 
 }

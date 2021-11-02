@@ -8,6 +8,33 @@ export const UsuariosServices = () => {
   const error = ref(false)
   const errors = ref([])
 
+  const recuperarContraseña = async (data) => {
+    Loading.show({
+      spinner: QSpinnerGears
+    })
+    const response = await api.post('/api/v1/admin/resetPassword', {
+      email: data
+    }).then(resp => {
+      error.value = false
+      errors.value = []
+      $q.notify({
+        message: resp.data.msg,
+        type: 'positive'
+      })
+      return true
+    }).catch(error => {
+      error.value = true
+      errors.value = error.response.data
+      $q.notify({
+        type: 'negative',
+        message: error.response.data.email[0]
+      })
+      return false
+    })
+    Loading.hide()
+    return response
+  }
+
   const createUsuario = async (data) => {
     Loading.show({
       spinner: QSpinnerGears
@@ -123,6 +150,7 @@ export const UsuariosServices = () => {
     errors,
     getUsuarios,
     updateUsuario,
-    borrarUsuario
+    borrarUsuario,
+    recuperarContraseña
   }
 }

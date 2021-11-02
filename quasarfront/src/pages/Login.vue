@@ -30,6 +30,7 @@
         <q-btn class="full-width q-mt-md" color="green" label="Ingresar" @click="login(user)" />
         <p class="text-dark q-mt-md" >Todavia no tenes tu usuario?</p>
         <q-btn class="full-width" color="blue" label="Registrarme" @click="registerPage" />
+        <q-btn class="full-width q-mt-md" color="red" label="Recuperar contraseña" @click="modalRecuperarContrasena = true" />
       </q-card-section>
 
       <q-img
@@ -97,6 +98,31 @@
         <q-btn @click="registrarUsuario(newUser)" class="full-width q-mt-sm" color="blue" label="Registrarme" />
       </q-card-section>
     </q-card>
+
+    <q-dialog v-model="modalRecuperarContrasena">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Recuperar contraseña</div>
+        </q-card-section>
+
+        <q-separator />
+
+        <q-card-section style="max-height: 50vh; width: 500px" class="scroll">
+          <q-input outlined v-model="email" label="Email" :error="errors.hasOwnProperty('email')">
+            <template v-slot:error>
+              {{errors.email[0]}}
+            </template>
+          </q-input>
+        </q-card-section>
+
+        <q-separator />
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cerrar" color="primary" v-close-popup />
+          <q-btn @click="resetPassword" flat label="Recuperar" color="primary" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -127,7 +153,11 @@ export default defineComponent({
       recaptcha: ''
     })
 
+    const email = ref(null)
+
     const mode = ref('login')
+
+    const modalRecuperarContrasena = ref(false)
 
     const registerPage = () => {
       mode.value = 'register'
@@ -155,9 +185,17 @@ export default defineComponent({
       }
     }
 
+    const resetPassword = async () => {
+      const response = await recuperarContraseña(email.value)
+      if (response) {
+        modalRecuperarContrasena.value = false
+        email.value = null
+      }
+    }
+
     const { dataAuth, login } = AuthServices()
 
-    const { errors, data, createUsuario } = UsuariosServices()
+    const { errors, data, createUsuario, recuperarContraseña } = UsuariosServices()
 
     const recaptchaVerified = (response) => {
       newUser.recaptcha = response
@@ -184,7 +222,11 @@ export default defineComponent({
       registrarUsuario,
       recaptchaVerified,
       recaptchaExpired,
-      recaptchaFailed
+      recaptchaFailed,
+      modalRecuperarContrasena,
+      email,
+      recuperarContraseña,
+      resetPassword
     }
   }
 })
